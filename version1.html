@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGRO-AI TOGO — Agriculture Intelligente</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   CSS VARIABLES & RESET
+═══════════════════════════════════════════════════════════════════ */
+:root {
+  --green-dark:   #1A5C2A;
+  --green-med:    #2E8B3E;
+  --green-light:  #4CAF50;
+  --green-pale:   #E8F5E9;
+  --green-ultra:  #F1FAF2;
+  --teal:         #006B6B;
+  --teal-light:   #E0F4F4;
+  --gold:         #C8972B;
+  --gold-light:   #FFF8E7;
+  --blue:         #0B3D6B;
+  --blue-light:   #EBF4FF;
+  --orange:       #E67E22;
+  --red:          #C0392B;
+  --bg:           #F4F7F5;
+  --card:         #FFFFFF;
+  --sidebar-w:    260px;
+  --header-h:     64px;
+  --radius:       16px;
+  --radius-sm:    10px;
+  --shadow:       0 4px 20px rgba(0,0,0,.08);
+  --shadow-md:    0 8px 32px rgba(0,0,0,.12);
+  --shadow-lg:    0 16px 48px rgba(0,0,0,.16);
+  --transition:   .25s cubic-bezier(.4,0,.2,1);
+  --font-main:    'Sora', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --text-dark:    #1A2B1C;
+  --text-mid:     #4A6350;
+  --text-light:   #8FA99A;
+  --border:       #E2EDE4;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { border: none; background: none; cursor: pointer; font-family: inherit; }
+input, select, textarea { font-family: inherit; border: none; outline: none; }
+img { display: block; max-width: 100%; }
+ul { list-style: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════════════════════════════════ */
+#app { display: flex; height: 100vh; overflow: hidden; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--green-dark);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 200;
+  transition: transform var(--transition);
+  overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.sidebar-logo .logo-icon {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--green-light), var(--gold));
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 10px;
+}
+.sidebar-logo h1 {
+  font-family: var(--font-main);
+  font-size: 17px; font-weight: 800;
+  color: #fff; line-height: 1.2;
+}
+.sidebar-logo span { font-size: 11px; color: rgba(255,255,255,.55); font-weight: 400; letter-spacing: .4px; }
+
+.sidebar-section { padding: 16px 12px 4px; }
+.sidebar-section-label {
+  font-size: 10px; font-weight: 600;
+  color: rgba(255,255,255,.4);
+  letter-spacing: 1.2px; text-transform: uppercase;
+  padding: 0 8px 8px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  color: rgba(255,255,255,.72);
+  font-size: 13.5px; font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  margin-bottom: 2px;
+}
+.nav-item i { width: 18px; text-align: center; font-size: 15px; }
+.nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(76,175,80,.35), rgba(78,160,255,.2));
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.nav-item .badge {
+  margin-left: auto;
+  background: var(--gold);
+  color: #fff; font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 99px;
+}
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 16px 12px;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+.user-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,.08);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+.user-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-light), var(--teal));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: #fff; font-weight: 700;
+  flex-shrink: 0;
+}
+.user-info .name { font-size: 13px; font-weight: 600; color: #fff; }
+.user-info .role { font-size: 11px; color: rgba(255,255,255,.5); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MAIN AREA
+═══════════════════════════════════════════════════════════════════ */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  transition: margin var(--transition);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOP HEADER
+═══════════════════════════════════════════════════════════════════ */
+.header {
+  height: var(--header-h);
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+  flex-shrink: 0;
+}
+.menu-btn {
+  display: none;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  background: var(--green-pale);
+  align-items: center; justify-content: center;
+  font-size: 18px; color: var(--green-dark);
+  flex-shrink: 0;
+}
+.header-search {
+  flex: 1; max-width: 420px;
+  display: flex; align-items: center; gap: 10px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 0 14px; height: 40px;
+}
+.header-search input {
+  flex: 1; background: none;
+  font-size: 13.5px; color: var(--text-dark);
+}
+.header-search input::placeholder { color: var(--text-light); }
+.header-search i { color: var(--text-light); font-size: 14px; }
+.header-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.hdr-btn {
+  width: 40px; height: 40px;
+  border-radius: 10px; background: var(--bg);
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; color: var(--text-mid);
+  cursor: pointer; transition: all var(--transition);
+  position: relative;
+}
+.hdr-btn:hover { background: var(--green-pale); color: var(--green-dark); border-color: var(--green-light); }
+.hdr-btn .dot {
+  position: absolute; top: 8px; right: 8px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--orange); border: 2px solid var(--card);
+}
+.page-title { font-family: var(--font-main); font-size: 18px; font-weight: 700; color: var(--text-dark); white-space: nowrap; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   CONTENT AREA
+═══════════════════════════════════════════════════════════════════ */
+.content {
+  flex: 1; overflow-y: auto;
+  padding: 24px;
+}
+.page { display: none; }
+.page.active { display: block; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   CARDS & COMMON
+═══════════════════════════════════════════════════════════════════ */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.card-pad { padding: 20px; }
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.section-title { font-family: var(--font-main); font-size: 16px; font-weight: 700; }
+.see-more { font-size: 13px; color: var(--green-med); font-weight: 600; cursor: pointer; }
+.see-more:hover { text-decoration: underline; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.mb-16 { margin-bottom: 16px; }
+.mb-24 { margin-bottom: 24px; }
+.tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600;
+}
+.tag-green { background: var(--green-pale); color: var(--green-dark); }
+.tag-gold { background: var(--gold-light); color: var(--gold); }
+.tag-teal { background: var(--teal-light); color: var(--teal); }
+.tag-blue { background: var(--blue-light); color: var(--blue); }
+.tag-orange { background: #FFF3E0; color: var(--orange); }
+.tag-red { background: #FDECEA; color: var(--red); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 20px; border-radius: 10px;
+  font-size: 13.5px; font-weight: 600;
+  cursor: pointer; transition: all var(--transition);
+  font-family: var(--font-body);
+}
+.btn-primary { background: var(--green-dark); color: #fff; }
+.btn-primary:hover { background: var(--green-med); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,92,42,.35); }
+.btn-outline { background: transparent; color: var(--green-dark); border: 1.5px solid var(--green-dark); }
+.btn-outline:hover { background: var(--green-pale); }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-gold:hover { background: #b5841f; }
+.btn-sm { padding: 7px 14px; font-size: 12px; }
+.btn-icon { width: 36px; height: 36px; padding: 0; border-radius: 9px; }
+
+/* STAT CARD */
+.stat-card {
+  background: var(--card); border-radius: var(--radius); padding: 20px;
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  position: relative; overflow: hidden;
+}
+.stat-card .stat-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 12px;
+}
+.stat-card .stat-value { font-family: var(--font-main); font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+.stat-card .stat-label { font-size: 12.5px; color: var(--text-mid); font-weight: 500; }
+.stat-card .stat-trend {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 11.5px; font-weight: 600; margin-top: 8px;
+}
+.stat-card .bg-deco {
+  position: absolute; right: -12px; bottom: -12px;
+  width: 80px; height: 80px; border-radius: 50%;
+  opacity: .08; font-size: 60px; line-height: 80px;
+  text-align: center;
+}
+
+/* PROGRESS BAR */
+.progress-bar { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+.progress-fill { height: 100%; border-radius: 99px; transition: width .6s ease; }
+
+/* AVATAR GROUP */
+.avatar-group { display: flex; }
+.avatar-group .av {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 2.5px solid var(--card);
+  background: linear-gradient(135deg, var(--green-light), var(--teal));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+  margin-left: -8px;
+}
+.avatar-group .av:first-child { margin-left: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: DASHBOARD (HOME)
+═══════════════════════════════════════════════════════════════════ */
+.dashboard-hero {
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--teal) 100%);
+  border-radius: var(--radius); padding: 28px;
+  color: #fff; position: relative; overflow: hidden; margin-bottom: 24px;
+}
+.dashboard-hero::before {
+  content: '🌱';
+  position: absolute; right: 24px; top: 50%; transform: translateY(-50%);
+  font-size: 80px; opacity: .15;
+}
+.dashboard-hero h2 { font-family: var(--font-main); font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.dashboard-hero p { font-size: 13.5px; opacity: .82; max-width: 500px; line-height: 1.6; }
+.hero-chips { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.hero-chip {
+  background: rgba(255,255,255,.15); backdrop-filter: blur(10px);
+  padding: 5px 12px; border-radius: 99px;
+  font-size: 12px; font-weight: 600; border: 1px solid rgba(255,255,255,.2);
+}
+
+/* ACTIVITY ITEM */
+.activity-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.activity-item:last-child { border-bottom: none; padding-bottom: 0; }
+.activity-dot {
+  width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.activity-text { flex: 1; }
+.activity-text strong { font-size: 13px; font-weight: 600; display: block; margin-bottom: 2px; }
+.activity-text span { font-size: 12px; color: var(--text-light); }
+.activity-time { font-size: 11px; color: var(--text-light); white-space: nowrap; }
+
+/* WEATHER WIDGET */
+.weather-card {
+  background: linear-gradient(135deg, #1565C0, #0097A7);
+  border-radius: var(--radius); padding: 20px; color: #fff;
+}
+.weather-temp { font-family: var(--font-main); font-size: 48px; font-weight: 800; line-height: 1; }
+.weather-meta { font-size: 12.5px; opacity: .8; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: SOL ANALYSIS
+═══════════════════════════════════════════════════════════════════ */
+.soil-map {
+  background: linear-gradient(135deg, #2d5016, #4a7c2a, #6ab04c);
+  border-radius: var(--radius); padding: 24px; color: #fff;
+  position: relative; overflow: hidden; min-height: 200px;
+}
+.soil-map::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 20px,
+    rgba(255,255,255,.03) 20px, rgba(255,255,255,.03) 40px
+  );
+}
+.soil-params { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.soil-param {
+  background: var(--card); border-radius: var(--radius-sm);
+  padding: 16px; border: 1px solid var(--border);
+}
+.soil-param .param-label { font-size: 11px; color: var(--text-light); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+.soil-param .param-value { font-family: var(--font-main); font-size: 22px; font-weight: 700; }
+.soil-param .param-unit { font-size: 11px; color: var(--text-mid); }
+.soil-param .param-status { margin-top: 6px; }
+
+.recommendation-card {
+  background: linear-gradient(135deg, var(--green-pale), var(--teal-light));
+  border-radius: var(--radius-sm); padding: 16px;
+  border-left: 4px solid var(--green-med);
+  margin-bottom: 10px;
+}
+.recommendation-card h4 { font-size: 13.5px; font-weight: 700; margin-bottom: 6px; color: var(--green-dark); }
+.recommendation-card p { font-size: 12.5px; color: var(--text-mid); line-height: 1.6; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: DRONES
+═══════════════════════════════════════════════════════════════════ */
+.drone-card {
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.drone-header {
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  padding: 20px; color: #fff; position: relative;
+}
+.drone-header::before { content: '🚁'; position: absolute; right: 16px; bottom: 12px; font-size: 48px; opacity: .2; }
+.drone-status-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.drone-status-dot.active { background: #4CAF50; box-shadow: 0 0 0 3px rgba(76,175,80,.3); animation: pulse 2s infinite; }
+.drone-status-dot.idle { background: #FFC107; }
+.drone-status-dot.charging { background: #2196F3; }
+
+@keyframes pulse { 0%,100%{ opacity:1; } 50%{ opacity:.5; } }
+
+.drone-metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); }
+.drone-metric { background: var(--card); padding: 14px; text-align: center; }
+.drone-metric .val { font-family: var(--font-main); font-size: 18px; font-weight: 800; }
+.drone-metric .lbl { font-size: 10.5px; color: var(--text-light); margin-top: 2px; }
+
+.flight-log-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.flight-log-item:last-child { border-bottom: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: CULTURES (COURSES style)
+═══════════════════════════════════════════════════════════════════ */
+.culture-card {
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  overflow: hidden; cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.culture-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.culture-thumb {
+  height: 140px; position: relative;
+  background: linear-gradient(135deg, var(--green-dark), var(--green-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 56px;
+}
+.culture-thumb .culture-badge {
+  position: absolute; top: 10px; left: 10px;
+}
+.culture-body { padding: 14px; }
+.culture-title { font-family: var(--font-main); font-size: 14px; font-weight: 700; margin-bottom: 6px; line-height: 1.4; }
+.culture-meta { display: flex; align-items: center; justify-content: space-between; }
+.culture-rating { display: flex; align-items: center; gap: 4px; font-size: 12px; }
+.culture-rating i { color: #FFC107; }
+.culture-price { font-family: var(--font-main); font-size: 15px; font-weight: 800; color: var(--green-dark); }
+.culture-instructor { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-mid); margin: 8px 0 4px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: CHAT (Community style)
+═══════════════════════════════════════════════════════════════════ */
+.chat-layout { display: flex; gap: 0; height: calc(100vh - var(--header-h) - 48px); }
+.chat-list {
+  width: 300px; flex-shrink: 0;
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.chat-list-header { padding: 16px; border-bottom: 1px solid var(--border); }
+.chat-list-header h3 { font-family: var(--font-main); font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+.chat-search {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg); border-radius: 10px; padding: 8px 12px;
+}
+.chat-search input { flex: 1; background: none; font-size: 13px; color: var(--text-dark); }
+.chat-search input::placeholder { color: var(--text-light); }
+.chat-items { flex: 1; overflow-y: auto; }
+.chat-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; cursor: pointer;
+  transition: background var(--transition);
+  border-bottom: 1px solid var(--border);
+}
+.chat-item:hover, .chat-item.active { background: var(--green-pale); }
+.chat-item .av {
+  width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--green-light), var(--teal));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #fff;
+  position: relative;
+}
+.chat-item .av .online-dot {
+  position: absolute; bottom: 1px; right: 1px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #4CAF50; border: 2px solid var(--card);
+}
+.chat-item .info { flex: 1; min-width: 0; }
+.chat-item .info .name { font-size: 13.5px; font-weight: 600; }
+.chat-item .info .preview { font-size: 12px; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-item .meta { text-align: right; }
+.chat-item .meta .time { font-size: 11px; color: var(--text-light); }
+.chat-item .meta .unread {
+  background: var(--green-med); color: #fff;
+  font-size: 10px; font-weight: 700;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-left: auto; margin-top: 4px;
+}
+
+.chat-window {
+  flex: 1; display: flex; flex-direction: column;
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); margin-left: 16px; overflow: hidden;
+}
+.chat-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+.chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; background: var(--bg); }
+.msg { display: flex; gap: 10px; max-width: 70%; }
+.msg.out { flex-direction: row-reverse; margin-left: auto; }
+.msg-bubble {
+  padding: 10px 14px; border-radius: 16px;
+  font-size: 13.5px; line-height: 1.55;
+  max-width: 100%;
+}
+.msg.in .msg-bubble { background: var(--card); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+.msg.out .msg-bubble { background: var(--green-dark); color: #fff; border-bottom-right-radius: 4px; }
+.msg-time { font-size: 10.5px; color: var(--text-light); margin-top: 4px; text-align: right; }
+.msg.in .msg-time { text-align: left; }
+.msg-av { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg,var(--teal),var(--green-light)); display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff; }
+.chat-input-area {
+  padding: 14px 16px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.chat-input {
+  flex: 1; background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 12px; padding: 10px 16px; font-size: 13.5px;
+}
+.chat-input:focus { border-color: var(--green-med); background: var(--card); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: TRACTEURS / MACHINES
+═══════════════════════════════════════════════════════════════════ */
+.machine-card {
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.machine-card .machine-header {
+  background: linear-gradient(135deg, #0d1b2a, #1b2838);
+  padding: 20px; color: #fff; position: relative;
+}
+.machine-card .machine-header::before { content: '🚜'; position:absolute;right:16px;bottom:8px;font-size:52px;opacity:.2; }
+.diag-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.diag-item:last-child { border-bottom: none; }
+.diag-icon { width: 36px; height: 36px; border-radius: 9px; display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0; }
+.diag-info { flex: 1; }
+.diag-info .d-label { font-size: 13px; font-weight: 600; }
+.diag-info .d-val { font-size: 12px; color: var(--text-light); }
+.diag-status { font-size: 11.5px; font-weight: 600; }
+.diag-status.ok { color: var(--green-med); }
+.diag-status.warn { color: var(--orange); }
+.diag-status.err { color: var(--red); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: SUPPLY CHAIN
+═══════════════════════════════════════════════════════════════════ */
+.pipeline-step {
+  display: flex; align-items: flex-start; gap: 16px;
+  padding: 16px 0; position: relative;
+}
+.pipeline-step:not(:last-child)::before {
+  content: '';
+  position: absolute; left: 19px; top: 52px;
+  width: 2px; bottom: 0; background: var(--border);
+}
+.pipeline-icon {
+  width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; z-index: 1; border: 2px solid var(--border);
+  background: var(--card);
+}
+.pipeline-icon.done { background: var(--green-pale); border-color: var(--green-med); }
+.pipeline-icon.current { background: var(--gold-light); border-color: var(--gold); animation: pulse 2s infinite; }
+.pipeline-icon.pending { background: var(--bg); }
+.pipeline-content { flex: 1; }
+.pipeline-content h4 { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.pipeline-content p { font-size: 12.5px; color: var(--text-mid); line-height: 1.5; }
+.pipeline-content .p-meta { display: flex; gap: 10px; margin-top: 8px; font-size: 11.5px; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: CONSERVATION
+═══════════════════════════════════════════════════════════════════ */
+.storage-unit {
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 16px;
+}
+.storage-unit .su-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.storage-unit .su-icon { font-size: 28px; }
+.storage-gauge {
+  width: 80px; height: 80px; position: relative; margin: 8px auto;
+}
+.storage-gauge svg { transform: rotate(-90deg); }
+.storage-gauge .gauge-text {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-main); font-size: 18px; font-weight: 800;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: SANTE / NUTRITION
+═══════════════════════════════════════════════════════════════════ */
+.nutrition-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.nutrition-bar .n-label { width: 100px; font-size: 12.5px; font-weight: 500; color: var(--text-mid); }
+.nutrition-bar .n-bar { flex: 1; height: 10px; background: var(--border); border-radius: 99px; overflow: hidden; }
+.nutrition-bar .n-fill { height: 100%; border-radius: 99px; }
+.nutrition-bar .n-val { width: 40px; font-size: 12px; font-weight: 700; text-align: right; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PAGE: REVIEWS  
+═══════════════════════════════════════════════════════════════════ */
+.review-card {
+  background: var(--card); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 18px;
+  box-shadow: var(--shadow);
+}
+.review-stars { color: #FFC107; font-size: 14px; letter-spacing: 2px; margin: 6px 0; }
+.review-text { font-size: 13px; color: var(--text-mid); line-height: 1.65; }
+.reviewer { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+.reviewer .rv-av { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg,var(--green-med),var(--teal)); display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff; }
+.reviewer .rv-name { font-size: 13px; font-weight: 600; }
+.reviewer .rv-role { font-size: 11px; color: var(--text-light); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MODAL
+═══════════════════════════════════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,.5); backdrop-filter: blur(4px);
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--card); border-radius: 20px;
+  box-shadow: var(--shadow-lg); width: 100%; max-width: 520px;
+  max-height: 90vh; overflow-y: auto;
+  animation: modalIn .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalIn { from{opacity:0;transform:scale(.9) translateY(20px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.modal-header h3 { font-family: var(--font-main); font-size: 17px; font-weight: 700; }
+.modal-close { width: 32px; height: 32px; border-radius: 8px; background: var(--bg); display:flex;align-items:center;justify-content:center;color:var(--text-mid);cursor:pointer; transition: background var(--transition); }
+.modal-close:hover { background: #fdecea; color: var(--red); }
+.modal-body { padding: 20px 24px; }
+
+/* FORM */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text-dark); }
+.form-control {
+  width: 100%; background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 10px 14px; font-size: 13.5px; color: var(--text-dark);
+  transition: border-color var(--transition);
+  font-family: var(--font-body);
+}
+.form-control:focus { border-color: var(--green-med); background: var(--card); outline: none; }
+.form-control::placeholder { color: var(--text-light); }
+select.form-control { cursor: pointer; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   NOTIFICATION TOAST
+═══════════════════════════════════════════════════════════════════ */
+#toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 1000; display: flex; flex-direction: column; gap: 8px; }
+.toast {
+  background: var(--card); border-radius: 12px; box-shadow: var(--shadow-md);
+  padding: 14px 18px; display: flex; align-items: center; gap: 12px;
+  min-width: 280px; max-width: 360px;
+  border-left: 4px solid var(--green-med);
+  animation: slideIn .3s ease;
+}
+.toast.error { border-left-color: var(--red); }
+.toast.warning { border-left-color: var(--orange); }
+@keyframes slideIn { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+.toast-icon { font-size: 20px; }
+.toast-text { flex: 1; }
+.toast-text strong { font-size: 13.5px; font-weight: 700; display: block; }
+.toast-text span { font-size: 12px; color: var(--text-light); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════════════════════════════ */
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th { background: var(--bg); font-size: 11.5px; font-weight: 700; color: var(--text-mid); text-transform: uppercase; letter-spacing: .5px; padding: 10px 14px; text-align: left; border-bottom: 1.5px solid var(--border); }
+.data-table td { padding: 12px 14px; font-size: 13px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.data-table tr:hover td { background: var(--green-ultra); }
+.data-table tr:last-child td { border-bottom: none; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE OVERLAY
+═══════════════════════════════════════════════════════════════════ */
+.sidebar-overlay {
+  display: none; position: fixed; inset: 0; z-index: 190;
+  background: rgba(0,0,0,.4); backdrop-filter: blur(3px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2,1fr); }
+  .grid-3 { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+  .sidebar-overlay.open { display: block; }
+  .main { margin-left: 0; }
+  .menu-btn { display: flex; }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .chat-layout { flex-direction: column; height: auto; }
+  .chat-list { width: 100%; max-height: 250px; }
+  .chat-window { margin-left: 0; margin-top: 12px; height: 400px; }
+  .content { padding: 16px; }
+  .dashboard-hero::before { display: none; }
+  .header-search { display: none; }
+  .page-title { font-size: 15px; }
+}
+@media (max-width: 480px) {
+  .stat-card .stat-value { font-size: 22px; }
+  .drone-metrics { grid-template-columns: repeat(2,1fr); }
+  .soil-params { grid-template-columns: repeat(2,1fr); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   LOADING SPINNER
+═══════════════════════════════════════════════════════════════════ */
+.spinner {
+  width: 36px; height: 36px; border: 3px solid var(--border);
+  border-top-color: var(--green-med); border-radius: 50%;
+  animation: spin .7s linear infinite; margin: 20px auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════════════════════════════
+   MISC
+═══════════════════════════════════════════════════════════════════ */
+.divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+.text-green { color: var(--green-med); }
+.text-gold { color: var(--gold); }
+.text-red { color: var(--red); }
+.text-orange { color: var(--orange); }
+.text-sm { font-size: 12.5px; }
+.text-xs { font-size: 11.5px; color: var(--text-light); }
+.fw-700 { font-weight: 700; }
+.fw-600 { font-weight: 600; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.w-full { width: 100%; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+.overflow-x { overflow-x: auto; }
+
+/* Tab nav */
+.tab-nav { display: flex; gap: 4px; background: var(--bg); padding: 4px; border-radius: 12px; margin-bottom: 20px; }
+.tab-btn { flex: 1; padding: 9px 16px; border-radius: 9px; font-size: 13px; font-weight: 600; color: var(--text-mid); cursor: pointer; transition: all var(--transition); text-align: center; }
+.tab-btn.active { background: var(--card); color: var(--green-dark); box-shadow: var(--shadow); }
+
+/* Filter chips */
+.filter-chips { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-chip { padding: 6px 14px; border-radius: 99px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: 1.5px solid var(--border); background: var(--card); color: var(--text-mid); transition: all var(--transition); }
+.filter-chip.active { background: var(--green-dark); color: #fff; border-color: var(--green-dark); }
+.filter-chip:hover:not(.active) { border-color: var(--green-med); color: var(--green-dark); }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- ══════════════════════════════════ SIDEBAR ══════════════════════════════════ -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🌿</div>
+      <h1>AGRO-AI TOGO</h1>
+      <span>Agriculture Intelligente & Biologique</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Principal</div>
+      <div class="nav-item active" data-page="dashboard" onclick="navigate('dashboard',this)">
+        <i class="fa-solid fa-house"></i> Tableau de Bord
+      </div>
+      <div class="nav-item" data-page="sols" onclick="navigate('sols',this)">
+        <i class="fa-solid fa-layer-group"></i> Analyse des Sols
+      </div>
+      <div class="nav-item" data-page="cultures" onclick="navigate('cultures',this)">
+        <i class="fa-solid fa-seedling"></i> Cultures
+      </div>
+      <div class="nav-item" data-page="drones" onclick="navigate('drones',this)">
+        <i class="fa-solid fa-helicopter"></i> Drones
+        <span class="badge">3</span>
+      </div>
+      <div class="nav-item" data-page="tracteurs" onclick="navigate('tracteurs',this)">
+        <i class="fa-solid fa-tractor"></i> Tracteurs & Machines
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Chaîne de Valeur</div>
+      <div class="nav-item" data-page="supply" onclick="navigate('supply',this)">
+        <i class="fa-solid fa-route"></i> Chaîne d'Appro.
+      </div>
+      <div class="nav-item" data-page="transformation" onclick="navigate('transformation',this)">
+        <i class="fa-solid fa-industry"></i> Transformation
+      </div>
+      <div class="nav-item" data-page="conservation" onclick="navigate('conservation',this)">
+        <i class="fa-solid fa-snowflake"></i> Conservation
+      </div>
+      <div class="nav-item" data-page="marche" onclick="navigate('marche',this)">
+        <i class="fa-solid fa-store"></i> Marché & Export
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Intelligence</div>
+      <div class="nav-item" data-page="sante" onclick="navigate('sante',this)">
+        <i class="fa-solid fa-heart-pulse"></i> Santé & Nutrition
+      </div>
+      <div class="nav-item" data-page="environnement" onclick="navigate('environnement',this)">
+        <i class="fa-solid fa-leaf"></i> Environnement
+      </div>
+      <div class="nav-item" data-page="communaute" onclick="navigate('communaute',this)">
+        <i class="fa-solid fa-comments"></i> Communauté
+        <span class="badge">5</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Gestion</div>
+      <div class="nav-item" data-page="rapports" onclick="navigate('rapports',this)">
+        <i class="fa-solid fa-chart-line"></i> Rapports & IA
+      </div>
+      <div class="nav-item" data-page="parametres" onclick="navigate('parametres',this)">
+        <i class="fa-solid fa-gear"></i> Paramètres
+      </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="user-card">
+        <div class="user-avatar">AT</div>
+        <div class="user-info">
+          <div class="name">Admin AGRO-IA</div>
+          <div class="role">Superviseur Général</div>
+        </div>
+        <i class="fa-solid fa-ellipsis-vertical" style="color:rgba(255,255,255,.4);margin-left:auto;font-size:13px;"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════ MAIN ══════════════════════════════════ -->
+  <div class="main">
+    <!-- HEADER -->
+    <header class="header">
+      <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <div class="header-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" placeholder="Rechercher parcelles, cultures, drones…" id="globalSearch">
+      </div>
+      <span class="page-title" id="pageTitle">Tableau de Bord</span>
+      <div class="header-actions">
+        <button class="hdr-btn" onclick="showToast('Météo Lomé : ☀️ 28°C – Humidité 65%','Mise à jour il y a 5 min')"><i class="fa-solid fa-cloud-sun"></i></button>
+        <button class="hdr-btn" onclick="openModal('alertModal')"><i class="fa-solid fa-bell"></i><span class="dot"></span></button>
+        <button class="hdr-btn" onclick="openModal('profileModal')"><i class="fa-solid fa-user"></i></button>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- ████████████████ PAGE: DASHBOARD ████████████████ -->
+      <div class="page active" id="page-dashboard">
+        <!-- Hero -->
+        <div class="dashboard-hero">
+          <h2>🌱 Bonjour, bienvenue sur AGRO-AI TOGO</h2>
+          <p>Plateforme d'agriculture biologique intelligente. Surveillez vos sols, pilotez vos drones et suivez votre chaîne de valeur en temps réel.</p>
+          <div class="hero-chips">
+            <span class="hero-chip">⚡ 3 Drones Actifs</span>
+            <span class="hero-chip">🌡 28°C Lomé</span>
+            <span class="hero-chip">💧 Irrigation ON</span>
+            <span class="hero-chip">📅 Saison Harmattan</span>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid-4 mb-24">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#E8F5E9;color:var(--green-dark);">🌾</div>
+            <div class="stat-value" style="color:var(--green-dark);">12 485</div>
+            <div class="stat-label">Hectares Sous Gestion IA</div>
+            <div class="stat-trend"><i class="fa-solid fa-arrow-trend-up text-green"></i><span class="text-green">+18%</span> ce mois</div>
+            <div class="bg-deco" style="color:var(--green-med);">🌾</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#FFF8E7;color:var(--gold);">👨‍🌾</div>
+            <div class="stat-value" style="color:var(--gold);">3 248</div>
+            <div class="stat-label">Agriculteurs Actifs</div>
+            <div class="stat-trend"><i class="fa-solid fa-arrow-trend-up text-green"></i><span class="text-green">+124</span> ce mois</div>
+            <div class="bg-deco">👨‍🌾</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#EBF4FF;color:var(--blue);">🚁</div>
+            <div class="stat-value" style="color:var(--blue);">28</div>
+            <div class="stat-label">Drones Opérationnels</div>
+            <div class="stat-trend"><i class="fa-solid fa-circle text-green" style="font-size:8px;"></i><span>3 en vol actif</span></div>
+            <div class="bg-deco">🚁</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#FFF3E0;color:var(--orange);">📦</div>
+            <div class="stat-value" style="color:var(--orange);">847 T</div>
+            <div class="stat-label">Récolte ce Mois (Tonnes)</div>
+            <div class="stat-trend"><i class="fa-solid fa-arrow-trend-up text-green"></i><span class="text-green">+32%</span> vs trimestre</div>
+            <div class="bg-deco">📦</div>
+          </div>
+        </div>
+
+        <div class="grid-2 mb-24">
+          <!-- Activité récente -->
+          <div class="card card-pad">
+            <div class="section-header">
+              <h3 class="section-title">Activité Récente</h3>
+              <span class="see-more" onclick="navigate('rapports',null)">Voir tout</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:#E8F5E9;">🌿</div>
+              <div class="activity-text">
+                <strong>Analyse sol — Parcelle K-12 (Kpalimé)</strong>
+                <span>pH 6.2 · Carbone 3.1% · Recommandation: Soja</span>
+              </div>
+              <span class="activity-time">Il y a 12 min</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:#EBF4FF;">🚁</div>
+              <div class="activity-text">
+                <strong>Drone D-07 — Irrigation terminée</strong>
+                <span>Parcelle M-04 · 18 ha couverts · 420L utilisés</span>
+              </div>
+              <span class="activity-time">Il y a 34 min</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:#FFF3E0;">🚜</div>
+              <div class="activity-text">
+                <strong>Tracteur T-02 — Labour terminé</strong>
+                <span>Profondeur 25cm · Parcelle S-08 · Dapaong</span>
+              </div>
+              <span class="activity-time">Il y a 1h</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:#FFF8E7;">🌽</div>
+              <div class="activity-text">
+                <strong>Récolte — Maïs Biologique certifié</strong>
+                <span>Coopérative Plateaux · 12.4 tonnes · Export UE</span>
+              </div>
+              <span class="activity-time">Il y a 2h</span>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot" style="background:#E0F4F4;">⚠️</div>
+              <div class="activity-text">
+                <strong>Alerte — Carence Azote détectée</strong>
+                <span>Parcelle L-21 Maritime · Amendement organique requis</span>
+              </div>
+              <span class="activity-time">Il y a 3h</span>
+            </div>
+          </div>
+
+          <!-- Météo + Carte cultures -->
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="weather-card">
+              <div class="flex-center gap-12" style="margin-bottom:12px;">
+                <div>
+                  <div style="font-size:13px;opacity:.8;margin-bottom:2px;">📍 Lomé, Togo</div>
+                  <div class="weather-temp">28°C</div>
+                  <div class="weather-meta">☀️ Ensoleillé · Humidité 65% · Vent 12 km/h</div>
+                </div>
+                <div style="margin-left:auto;text-align:right;">
+                  <div style="font-size:12px;opacity:.7;margin-bottom:8px;">Prévisions</div>
+                  <div style="display:flex;gap:12px;">
+                    <div style="text-align:center;font-size:11px;opacity:.8;"><div>Mar</div><div>🌤</div><div>30°</div></div>
+                    <div style="text-align:center;font-size:11px;opacity:.8;"><div>Mer</div><div>🌧</div><div>24°</div></div>
+                    <div style="text-align:center;font-size:11px;opacity:.8;"><div>Jeu</div><div>⛅</div><div>27°</div></div>
+                  </div>
+                </div>
+              </div>
+              <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px;font-size:12px;">
+                💡 <strong>IA recommande :</strong> Irrigation des parcelles S-01 à S-05 aujourd'hui (faible probabilité pluie)
+              </div>
+            </div>
+            <div class="card card-pad">
+              <div class="section-header">
+                <h3 class="section-title">Cultures en Cours</h3>
+                <span class="see-more" onclick="navigate('cultures',null)">Voir tout</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div>
+                  <div class="flex-center gap-8" style="margin-bottom:4px;">
+                    <span style="font-size:13px;font-weight:600;">🫘 Soja Bio</span>
+                    <span class="tag tag-green" style="margin-left:auto;">Phase : Floraison</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:65%;background:var(--green-light);"></div></div>
+                  <div class="text-xs mt-12">65% · Récolte prévue dans 3 semaines</div>
+                </div>
+                <div>
+                  <div class="flex-center gap-8" style="margin-bottom:4px;">
+                    <span style="font-size:13px;font-weight:600;">🌽 Maïs Bio</span>
+                    <span class="tag tag-gold">Phase : Épiaison</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:80%;background:var(--gold);"></div></div>
+                  <div class="text-xs mt-12">80% · Récolte dans 8 jours</div>
+                </div>
+                <div>
+                  <div class="flex-center gap-8" style="margin-bottom:4px;">
+                    <span style="font-size:13px;font-weight:600;">🍍 Ananas Bio</span>
+                    <span class="tag tag-teal">Phase : Croissance</span>
+                  </div>
+                  <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--teal);"></div></div>
+                  <div class="text-xs mt-12">40% · Récolte dans 6 semaines</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI Environnemental -->
+        <div class="card card-pad mb-24">
+          <div class="section-header">
+            <h3 class="section-title">🌍 Impact Environnemental & Climatique</h3>
+          </div>
+          <div class="grid-4">
+            <div style="text-align:center;padding:16px;">
+              <div style="font-size:36px;font-weight:800;color:var(--green-dark);font-family:var(--font-main);">-85%</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Pesticides chimiques</div>
+            </div>
+            <div style="text-align:center;padding:16px;border-left:1px solid var(--border);">
+              <div style="font-size:36px;font-weight:800;color:var(--teal);font-family:var(--font-main);">-60%</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Eau consommée</div>
+            </div>
+            <div style="text-align:center;padding:16px;border-left:1px solid var(--border);">
+              <div style="font-size:36px;font-weight:800;color:var(--gold);font-family:var(--font-main);">2.1T</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">CO₂ séquestré/ha/an</div>
+            </div>
+            <div style="text-align:center;padding:16px;border-left:1px solid var(--border);">
+              <div style="font-size:36px;font-weight:800;color:var(--blue);font-family:var(--font-main);">100%</div>
+              <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Énergie solaire</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: SOLS ████████████████ -->
+      <div class="page" id="page-sols">
+        <div class="flex-center gap-12 mb-24">
+          <button class="btn btn-primary" onclick="openModal('solModal')"><i class="fa-solid fa-plus"></i> Nouvelle Analyse</button>
+          <button class="btn btn-outline"><i class="fa-solid fa-download"></i> Exporter</button>
+        </div>
+
+        <!-- Carte sol -->
+        <div class="soil-map mb-24">
+          <h3 style="font-family:var(--font-main);font-size:18px;font-weight:700;margin-bottom:4px;">🗺 Carte Parcellaire IA — Togo</h3>
+          <p style="opacity:.8;font-size:13px;margin-bottom:16px;">Visualisation temps réel des 500 ha sous analyse</p>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
+            <span class="hero-chip">🟢 Optimal : 147 ha</span>
+            <span class="hero-chip">🟡 À améliorer : 89 ha</span>
+            <span class="hero-chip">🔴 Critique : 12 ha</span>
+            <span class="hero-chip">📊 Analysés : 248/500 ha</span>
+          </div>
+        </div>
+
+        <!-- Paramètres sols -->
+        <div class="section-header mb-16">
+          <h3 class="section-title">Paramètres — Parcelle K-12 (Kpalimé)</h3>
+          <div class="flex-center gap-8">
+            <select class="form-control" style="width:auto;font-size:12px;">
+              <option>Parcelle K-12</option>
+              <option>Parcelle M-04</option>
+              <option>Parcelle S-08</option>
+            </select>
+            <button class="btn btn-sm btn-primary" onclick="runSoilAnalysis()"><i class="fa-solid fa-wand-magic-sparkles"></i> Analyser IA</button>
+          </div>
+        </div>
+
+        <div class="soil-params mb-24">
+          <div class="soil-param">
+            <div class="param-label">pH du sol</div>
+            <div class="param-value">6.2</div>
+            <div class="param-unit">Légèrement acide</div>
+            <div class="param-status"><span class="tag tag-green">✓ Optimal</span></div>
+          </div>
+          <div class="soil-param">
+            <div class="param-label">Azote (N)</div>
+            <div class="param-value">38</div>
+            <div class="param-unit">mg/kg</div>
+            <div class="param-status"><span class="tag tag-gold">⚠ Moyen</span></div>
+          </div>
+          <div class="soil-param">
+            <div class="param-label">Phosphore (P)</div>
+            <div class="param-value">82</div>
+            <div class="param-unit">mg/kg</div>
+            <div class="param-status"><span class="tag tag-green">✓ Bon</span></div>
+          </div>
+          <div class="soil-param">
+            <div class="param-label">Potassium (K)</div>
+            <div class="param-value">156</div>
+            <div class="param-unit">mg/kg</div>
+            <div class="param-status"><span class="tag tag-green">✓ Optimal</span></div>
+          </div>
+          <div class="soil-param">
+            <div class="param-label">Carbone Org.</div>
+            <div class="param-value">3.1</div>
+            <div class="param-unit">%</div>
+            <div class="param-status"><span class="tag tag-green">✓ Excellent</span></div>
+          </div>
+          <div class="soil-param">
+            <div class="param-label">Humidité</div>
+            <div class="param-value">42</div>
+            <div class="param-unit">%</div>
+            <div class="param-status"><span class="tag tag-teal">✓ Idéale</span></div>
+          </div>
+          <div class="soil-param">
+            <div class="param-label">Texture</div>
+            <div class="param-value" style="font-size:16px;">Argilo</div>
+            <div class="param-unit">limoneux</div>
+            <div class="param-status"><span class="tag tag-green">✓ Polyvalent</span></div>
+          </div>
+          <div class="soil-param">
+            <div class="param-label">Microbiome</div>
+            <div class="param-value">94</div>
+            <div class="param-unit">Score /100</div>
+            <div class="param-status"><span class="tag tag-green">✓ Excellent</span></div>
+          </div>
+        </div>
+
+        <!-- Recommandations IA -->
+        <div class="card card-pad mb-24">
+          <div class="section-header"><h3 class="section-title">🤖 Recommandations IA</h3></div>
+          <div class="recommendation-card">
+            <h4>🫘 Culture Recommandée : Soja Biologique</h4>
+            <p>Ce sol argilo-limoneux avec un pH 6.2 et une excellente teneur en carbone organique est parfaitement adapté à la culture du soja. Rendement estimé : 2.8 tonnes/ha (+40% vs moyenne nationale).</p>
+          </div>
+          <div class="recommendation-card">
+            <h4>🔧 Profondeur de Labour : 22-25 cm</h4>
+            <p>La structure argilo-limoneuse nécessite un labour à 22-25 cm pour optimiser l'aération racinaire. Utiliser le tracteur T-02 en mode autonome avec configuration "sol compact".</p>
+          </div>
+          <div class="recommendation-card">
+            <h4>💧 Programme d'Irrigation Recommandé</h4>
+            <p>3 sessions/semaine par drone (mardi, jeudi, dimanche) — Volume : 18L/m². Ajuster selon données hygromètre temps réel. Réduire en cas de précipitations > 10mm.</p>
+          </div>
+          <div class="recommendation-card">
+            <h4>🌿 Amendement Organique Conseillé</h4>
+            <p>Apport de compost biologique 3T/ha avant semis + inoculant rhizobium pour soja. Carence légère en azote détectée : compenser avec engrais vert (mucuna) en inter-culture.</p>
+          </div>
+        </div>
+
+        <!-- Table des parcelles -->
+        <div class="card overflow-x">
+          <div style="padding:16px 20px;border-bottom:1px solid var(--border);">
+            <h3 class="section-title">Toutes les Parcelles</h3>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Parcelle</th><th>Région</th><th>Surface</th><th>Culture</th>
+                <th>pH</th><th>Statut Sol</th><th>Dernière Analyse</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="parcellesTable">
+              <tr>
+                <td><strong>K-12</strong></td><td>Kpalimé</td><td>45 ha</td>
+                <td><span class="tag tag-green">🫘 Soja</span></td>
+                <td>6.2</td><td><span class="tag tag-green">Optimal</span></td>
+                <td>Il y a 12 min</td>
+                <td><button class="btn btn-sm btn-primary" onclick="showToast('Analyse IA lancée pour K-12','Résultats dans 2 min')">Analyser</button></td>
+              </tr>
+              <tr>
+                <td><strong>M-04</strong></td><td>Maritime</td><td>32 ha</td>
+                <td><span class="tag tag-gold">🌽 Maïs</span></td>
+                <td>6.8</td><td><span class="tag tag-gold">Moyen</span></td>
+                <td>Il y a 2h</td>
+                <td><button class="btn btn-sm btn-primary" onclick="showToast('Analyse IA lancée pour M-04','Résultats dans 2 min')">Analyser</button></td>
+              </tr>
+              <tr>
+                <td><strong>S-08</strong></td><td>Savanes</td><td>68 ha</td>
+                <td><span class="tag tag-teal">🥜 Arachide</span></td>
+                <td>5.9</td><td><span class="tag tag-gold">À corriger</span></td>
+                <td>Il y a 5h</td>
+                <td><button class="btn btn-sm btn-primary" onclick="showToast('Analyse IA lancée pour S-08','Résultats dans 2 min')">Analyser</button></td>
+              </tr>
+              <tr>
+                <td><strong>L-21</strong></td><td>Maritime</td><td>18 ha</td>
+                <td><span class="tag tag-teal">🍍 Ananas</span></td>
+                <td>5.2</td><td><span class="tag tag-red">Critique</span></td>
+                <td>Il y a 3h</td>
+                <td><button class="btn btn-sm btn-gold" onclick="showToast('Alerte critique L-21','Amendement urgent requis','error')">Alerter</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: CULTURES ████████████████ -->
+      <div class="page" id="page-cultures">
+        <div class="flex-center gap-12 mb-16">
+          <div class="filter-chips">
+            <span class="filter-chip active">Toutes</span>
+            <span class="filter-chip" onclick="filterCulture(this,'cereales')">Céréales</span>
+            <span class="filter-chip" onclick="filterCulture(this,'legumineuses')">Légumineuses</span>
+            <span class="filter-chip" onclick="filterCulture(this,'fruits')">Fruits</span>
+            <span class="filter-chip" onclick="filterCulture(this,'oleagineux')">Oléagineux</span>
+            <span class="filter-chip" onclick="filterCulture(this,'medicinal')">Médicinales</span>
+          </div>
+          <button class="btn btn-primary" style="margin-left:auto;" onclick="openModal('cultureModal')"><i class="fa-solid fa-plus"></i> Ajouter Culture</button>
+        </div>
+
+        <div class="grid-3" id="culturesGrid">
+          <!-- Cards générées par JS -->
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: DRONES ████████████████ -->
+      <div class="page" id="page-drones">
+        <div class="flex-center gap-12 mb-24">
+          <div>
+            <div style="font-size:13px;color:var(--text-mid);">Flotte totale</div>
+            <div style="font-family:var(--font-main);font-size:24px;font-weight:800;">28 Drones</div>
+          </div>
+          <div class="flex-center gap-8" style="margin-left:auto;">
+            <button class="btn btn-primary" onclick="openModal('droneModal')"><i class="fa-solid fa-plus"></i> Ajouter Drone</button>
+            <button class="btn btn-outline" onclick="showToast('Mission de groupe planifiée','3 drones assignés zone K')"><i class="fa-solid fa-paper-plane"></i> Mission Groupe</button>
+          </div>
+        </div>
+
+        <div class="grid-4 mb-24">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#E8F5E9;color:var(--green-dark);">🟢</div>
+            <div class="stat-value text-green">3</div>
+            <div class="stat-label">En vol actif</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#FFF8E7;color:var(--gold);">🟡</div>
+            <div class="stat-value text-gold">8</div>
+            <div class="stat-label">En standby</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#EBF4FF;color:var(--blue);">🔵</div>
+            <div class="stat-value" style="color:var(--blue);">15</div>
+            <div class="stat-label">En recharge</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:#FDECEA;color:var(--red);">🔴</div>
+            <div class="stat-value text-red">2</div>
+            <div class="stat-label">Maintenance</div>
+          </div>
+        </div>
+
+        <div class="grid-3 mb-24" id="dronesGrid">
+          <!-- généré par JS -->
+        </div>
+
+        <!-- Log des vols -->
+        <div class="card card-pad">
+          <div class="section-header"><h3 class="section-title">Journal des Missions</h3></div>
+          <div id="flightLog">
+            <div class="flight-log-item"><span class="tag tag-green">✓ Terminé</span><span style="flex:1;padding:0 12px;"><strong>D-07</strong> — Irrigation M-04 · 18 ha · 420L</span><span class="text-xs">Aujourd'hui 10:32</span></div>
+            <div class="flight-log-item"><span class="tag tag-green">✓ Terminé</span><span style="flex:1;padding:0 12px;"><strong>D-03</strong> — Semis K-12 · 12 ha · Soja</span><span class="text-xs">Aujourd'hui 08:15</span></div>
+            <div class="flight-log-item"><span class="tag tag-gold">⟳ En cours</span><span style="flex:1;padding:0 12px;"><strong>D-12</strong> — Surveillance S-08 · Photo multispectrale</span><span class="text-xs">En cours · ETA 14:20</span></div>
+            <div class="flight-log-item"><span class="tag tag-teal">⟳ En cours</span><span style="flex:1;padding:0 12px;"><strong>D-18</strong> — Épandage biopesticide · Parcelle L-21</span><span class="text-xs">En cours · ETA 14:45</span></div>
+            <div class="flight-log-item"><span class="tag tag-blue">⟳ En cours</span><span style="flex:1;padding:0 12px;"><strong>D-22</strong> — Cartographie nouvelle parcelle N-01</span><span class="text-xs">En cours · ETA 15:00</span></div>
+            <div class="flight-log-item"><span class="tag tag-green">✓ Terminé</span><span style="flex:1;padding:0 12px;"><strong>D-01</strong> — Inspection récolte maïs · Maturité 87%</span><span class="text-xs">Hier 16:48</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: TRACTEURS ████████████████ -->
+      <div class="page" id="page-tracteurs">
+        <div class="flex-center gap-12 mb-24">
+          <button class="btn btn-primary" onclick="openModal('tracteurModal')"><i class="fa-solid fa-plus"></i> Ajouter Machine</button>
+          <button class="btn btn-outline" onclick="runDiagnostic()"><i class="fa-solid fa-stethoscope"></i> Diagnostic Global IA</button>
+        </div>
+
+        <div class="grid-3 mb-24">
+          <!-- Tracteur 1 -->
+          <div class="machine-card">
+            <div class="machine-header">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="drone-status-dot active"></span>
+                <span style="font-size:13px;font-weight:600;">Tracteur T-01 — John Deere 5075</span>
+              </div>
+              <div style="font-size:12px;opacity:.7;">Parcelle K-12 · Labour en cours</div>
+            </div>
+            <div class="drone-metrics">
+              <div class="drone-metric"><div class="val text-green">25 cm</div><div class="lbl">Profondeur</div></div>
+              <div class="drone-metric"><div class="val">6.2 km/h</div><div class="lbl">Vitesse</div></div>
+              <div class="drone-metric"><div class="val text-gold">78%</div><div class="lbl">Carburant</div></div>
+            </div>
+            <div class="card-pad">
+              <div class="diag-item">
+                <div class="diag-icon" style="background:var(--green-pale);">⚙️</div>
+                <div class="diag-info"><div class="d-label">Moteur</div><div class="d-val">75 kW · T° 82°C</div></div>
+                <div class="diag-status ok">OK</div>
+              </div>
+              <div class="diag-item">
+                <div class="diag-icon" style="background:var(--green-pale);">🛞</div>
+                <div class="diag-info"><div class="d-label">Pneus</div><div class="d-val">Pression 1.8 bar</div></div>
+                <div class="diag-status ok">OK</div>
+              </div>
+              <div class="diag-item">
+                <div class="diag-icon" style="background:#FFF8E7;">🔧</div>
+                <div class="diag-info"><div class="d-label">Filtre à huile</div><div class="d-val">Prochaine révision 120h</div></div>
+                <div class="diag-status warn">À surveiller</div>
+              </div>
+              <div class="diag-item">
+                <div class="diag-icon" style="background:var(--green-pale);">📡</div>
+                <div class="diag-info"><div class="d-label">GPS/RTK</div><div class="d-val">Précision ±1.2 cm</div></div>
+                <div class="diag-status ok">Actif</div>
+              </div>
+            </div>
+            <div style="padding:12px 16px;border-top:1px solid var(--border);">
+              <button class="btn btn-sm btn-outline w-full" onclick="showToast('Rapport T-01 généré','Envoyé sur votre email')"><i class="fa-solid fa-file-pdf"></i> Rapport Diagnostic</button>
+            </div>
+          </div>
+
+          <!-- Tracteur 2 -->
+          <div class="machine-card">
+            <div class="machine-header">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="drone-status-dot idle"></span>
+                <span style="font-size:13px;font-weight:600;">Tracteur T-02 — New Holland T5</span>
+              </div>
+              <div style="font-size:12px;opacity:.7;">Standby · Prêt pour S-08</div>
+            </div>
+            <div class="drone-metrics">
+              <div class="drone-metric"><div class="val">—</div><div class="lbl">Profondeur</div></div>
+              <div class="drone-metric"><div class="val">0 km/h</div><div class="lbl">Vitesse</div></div>
+              <div class="drone-metric"><div class="val text-green">95%</div><div class="lbl">Carburant</div></div>
+            </div>
+            <div class="card-pad">
+              <div class="diag-item">
+                <div class="diag-icon" style="background:var(--green-pale);">⚙️</div>
+                <div class="diag-info"><div class="d-label">Moteur</div><div class="d-val">Arrêté · Prêt</div></div>
+                <div class="diag-status ok">OK</div>
+              </div>
+              <div class="diag-item">
+                <div class="diag-icon" style="background:#FDECEA;">🔧</div>
+                <div class="diag-info"><div class="d-label">Bras hydraulique</div><div class="d-val">Fuite détectée — Bras Robot</div></div>
+                <div class="diag-status err">Maintenance</div>
+              </div>
+              <div class="diag-item">
+                <div class="diag-icon" style="background:var(--green-pale);">📡</div>
+                <div class="diag-info"><div class="d-label">GPS/RTK</div><div class="d-val">Signal stable</div></div>
+                <div class="diag-status ok">Actif</div>
+              </div>
+            </div>
+            <div style="padding:12px 16px;border-top:1px solid var(--border);">
+              <button class="btn btn-sm btn-gold w-full" onclick="showToast('Bras robot mobilisé','Réparation hydraulique en cours','warning')"><i class="fa-solid fa-robot"></i> Lancer Réparation Robot</button>
+            </div>
+          </div>
+
+          <!-- Bras Robot -->
+          <div class="machine-card">
+            <div class="machine-header" style="background:linear-gradient(135deg,#1a0533,#2d1b5e);">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                <span class="drone-status-dot active"></span>
+                <span style="font-size:13px;font-weight:600;">🤖 Bras Robot R-01</span>
+              </div>
+              <div style="font-size:12px;opacity:.7;">Réparation T-02 en cours</div>
+            </div>
+            <div class="drone-metrics">
+              <div class="drone-metric"><div class="val" style="color:#9C27B0;">6 axes</div><div class="lbl">Articulations</div></div>
+              <div class="drone-metric"><div class="val text-green">78%</div><div class="lbl">Mission</div></div>
+              <div class="drone-metric"><div class="val">12 min</div><div class="lbl">ETA fin</div></div>
+            </div>
+            <div class="card-pad">
+              <div class="diag-item">
+                <div class="diag-icon" style="background:#EDE7F6;">🔩</div>
+                <div class="diag-info"><div class="d-label">Soudure laser</div><div class="d-val">Terminée</div></div>
+                <div class="diag-status ok">✓</div>
+              </div>
+              <div class="diag-item">
+                <div class="diag-icon" style="background:#EDE7F6;">💧</div>
+                <div class="diag-info"><div class="d-label">Remplacement joint</div><div class="d-val">En cours…</div></div>
+                <div class="diag-status warn">⟳ En cours</div>
+              </div>
+              <div class="diag-item">
+                <div class="diag-icon" style="background:var(--bg);">🔧</div>
+                <div class="diag-info"><div class="d-label">Test pression hydraulique</div><div class="d-val">En attente</div></div>
+                <div class="diag-status" style="color:var(--text-light);">Pending</div>
+              </div>
+            </div>
+            <div style="padding:12px 16px;border-top:1px solid var(--border);">
+              <div class="progress-bar"><div class="progress-fill" style="width:78%;background:linear-gradient(90deg,#9C27B0,#673AB7);"></div></div>
+              <div class="text-xs mt-12">78% de la mission terminée</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: SUPPLY CHAIN ████████████████ -->
+      <div class="page" id="page-supply">
+        <div class="grid-2 mb-24">
+          <!-- Pipeline -->
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🚚 Pipeline Lot #SCL-2024-847</h3>
+              <span class="tag tag-gold">🫘 Soja K-12</span>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon done">🌱</div>
+              <div class="pipeline-content">
+                <h4>Récolte & Tri</h4>
+                <p>Récolte automatisée · 12.4T triées par qualité IA (A:10.2T / B:2.2T)</p>
+                <div class="p-meta">
+                  <span class="tag tag-green">✓ Terminé</span>
+                  <span class="text-xs">14 déc. 2024</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon done">🧪</div>
+              <div class="pipeline-content">
+                <h4>Contrôle Qualité & Certification Bio</h4>
+                <p>Analyse résidus pesticides : 0 détecté. Certification UE Bio validée automatiquement.</p>
+                <div class="p-meta">
+                  <span class="tag tag-green">✓ Certifié</span>
+                  <span class="text-xs">15 déc. 2024</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon current">🏭</div>
+              <div class="pipeline-content">
+                <h4>Transformation — Huile de Soja Bio</h4>
+                <p>Unité de pressage à froid · Rendement 18.5% · Durée estimée 8h</p>
+                <div class="p-meta">
+                  <span class="tag tag-gold">⟳ En cours</span>
+                  <span class="text-xs">ETA: 16 déc. 16h00</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon pending">❄️</div>
+              <div class="pipeline-content">
+                <h4>Conservation & Conditionnement</h4>
+                <p>Chambre froide IA · Emballage bio-chitosane · QR traçabilité blockchain</p>
+                <div class="p-meta">
+                  <span class="tag" style="background:var(--bg);color:var(--text-mid);">En attente</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-step">
+              <div class="pipeline-icon pending">✈️</div>
+              <div class="pipeline-content">
+                <h4>Export — Marché Européen</h4>
+                <p>Acheteur : BioHarvest GmbH (Allemagne) · Prix négocié : 2 850 EUR/T</p>
+                <div class="p-meta">
+                  <span class="tag" style="background:var(--bg);color:var(--text-mid);">Planifié 20 déc.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Traçabilité Blockchain -->
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">⛓ Traçabilité Blockchain</h3></div>
+            <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:16px;">
+              <div class="text-xs mb-16">Hash lot : <code style="font-size:11px;color:var(--green-dark);">0x8a4f2e…d91c</code></div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div class="flex-center gap-8" style="font-size:12.5px;"><span>📍 Parcelle d'origine</span><span style="margin-left:auto;font-weight:600;">K-12, Kpalimé</span></div>
+                <div class="flex-center gap-8" style="font-size:12.5px;"><span>👨‍🌾 Producteur</span><span style="margin-left:auto;font-weight:600;">Kofi Mensah</span></div>
+                <div class="flex-center gap-8" style="font-size:12.5px;"><span>🌿 Type culture</span><span style="margin-left:auto;font-weight:600;">Soja Biologique</span></div>
+                <div class="flex-center gap-8" style="font-size:12.5px;"><span>🧪 Intrants utilisés</span><span style="margin-left:auto;font-weight:600;color:var(--green-med);">0 chimique</span></div>
+                <div class="flex-center gap-8" style="font-size:12.5px;"><span>💧 Eau utilisée</span><span style="margin-left:auto;font-weight:600;">840 L/ha (↓60%)</span></div>
+                <div class="flex-center gap-8" style="font-size:12.5px;"><span>🏅 Certification</span><span style="margin-left:auto;font-weight:600;color:var(--green-med);">UE Bio · NOP USA</span></div>
+              </div>
+            </div>
+            <button class="btn btn-outline w-full" onclick="showToast('QR Code généré','Partageable avec acheteurs et consommateurs')">
+              <i class="fa-solid fa-qrcode"></i> Générer QR Traçabilité
+            </button>
+
+            <div class="divider"></div>
+            <div class="section-header"><h3 class="section-title">📊 Lots Actifs</h3></div>
+            <table class="data-table" style="font-size:12px;">
+              <thead><tr><th>Lot</th><th>Culture</th><th>Masse</th><th>Statut</th></tr></thead>
+              <tbody>
+                <tr><td>#847</td><td>Soja K-12</td><td>12.4T</td><td><span class="tag tag-gold">Transformation</span></td></tr>
+                <tr><td>#831</td><td>Maïs M-04</td><td>8.7T</td><td><span class="tag tag-green">Export prêt</span></td></tr>
+                <tr><td>#819</td><td>Arachide S-08</td><td>5.2T</td><td><span class="tag tag-teal">Conservation</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: TRANSFORMATION ████████████████ -->
+      <div class="page" id="page-transformation">
+        <div class="grid-2 mb-24">
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🏭 Unités de Transformation Actives</h3></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="background:var(--bg);border-radius:12px;padding:14px;">
+                <div class="flex-center gap-8 mb-16"><span style="font-size:16px;">🫘</span><strong>Pressoir à froid — Soja</strong><span class="tag tag-gold" style="margin-left:auto;">⟳ Actif</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:65%;background:var(--gold);"></div></div>
+                <div class="flex-center gap-8 mt-12 text-xs"><span>65% — 8.1T traitées/12.4T</span><span style="margin-left:auto;">ETA 6h</span></div>
+                <div style="margin-top:10px;font-size:12.5px;color:var(--text-mid);">Produits : 🛢 Huile (1.85T) + 🌾 Tourteau (6.2T)</div>
+              </div>
+              <div style="background:var(--bg);border-radius:12px;padding:14px;">
+                <div class="flex-center gap-8 mb-16"><span style="font-size:16px;">🌽</span><strong>Moulin à farine — Maïs</strong><span class="tag tag-green" style="margin-left:auto;">✓ Terminé</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--green-light);"></div></div>
+                <div class="text-xs mt-12">Farine bio enrichie : 8.2T · Conditionnée · Prête export</div>
+              </div>
+              <div style="background:var(--bg);border-radius:12px;padding:14px;">
+                <div class="flex-center gap-8 mb-16"><span style="font-size:16px;">🍍</span><strong>Séchoir solaire — Ananas</strong><span class="tag tag-teal" style="margin-left:auto;">⟳ Actif</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:40%;background:var(--teal);"></div></div>
+                <div class="text-xs mt-12">40% — Ananas séchés bio · 2.4T/6T · ETA 18h</div>
+              </div>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🤖 Décision IA — Valorisation Optimale</h3></div>
+            <div style="background:linear-gradient(135deg,var(--green-pale),var(--teal-light));border-radius:12px;padding:16px;margin-bottom:16px;">
+              <div style="font-size:12px;color:var(--text-mid);margin-bottom:8px;">Pour le lot Soja #847 · 12.4 tonnes</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div class="flex-center gap-8"><span class="tag tag-gold">Option retenue</span><strong>Huile bio + Tourteau (valeur max)</strong></div>
+                <div style="font-size:12.5px;color:var(--text-mid);">Valeur estimée : <strong style="color:var(--green-dark);">28 500 EUR</strong></div>
+                <div style="font-size:12px;color:var(--text-mid);">vs grain brut : 17 360 EUR (+64% valeur ajoutée)</div>
+              </div>
+            </div>
+            <div class="section-header" style="margin-top:8px;"><h4 class="section-title" style="font-size:14px;">Options comparées par IA</h4></div>
+            <table class="data-table" style="font-size:12px;">
+              <thead><tr><th>Produit final</th><th>Rendement</th><th>Valeur</th><th>Score IA</th></tr></thead>
+              <tbody>
+                <tr><td>🛢 Huile + Tourteau</td><td>18.5% + 50%</td><td>28 500 EUR</td><td><strong class="text-green">⭐ 94/100</strong></td></tr>
+                <tr><td>🌾 Grain brut</td><td>100%</td><td>17 360 EUR</td><td>72/100</td></tr>
+                <tr><td>🥛 Lait de soja</td><td>300% vol.</td><td>22 000 EUR</td><td>81/100</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: CONSERVATION ████████████████ -->
+      <div class="page" id="page-conservation">
+        <div class="grid-4 mb-24">
+          <div class="stat-card"><div class="stat-icon" style="background:#EBF4FF;color:var(--blue);">❄️</div><div class="stat-value" style="color:var(--blue);">4°C</div><div class="stat-label">Chambre Froide A</div><div class="stat-trend text-green"><i class="fa-solid fa-check"></i> Optimal</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#E8F5E9;color:var(--green-dark);">🌡</div><div class="stat-value text-green">18°C</div><div class="stat-label">Silo Céréales B</div><div class="stat-trend text-green"><i class="fa-solid fa-check"></i> Normal</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#FFF8E7;color:var(--gold);">💧</div><div class="stat-value text-gold">62%</div><div class="stat-label">Humidité Moy.</div><div class="stat-trend text-green"><i class="fa-solid fa-check"></i> Idéale</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#FDECEA;color:var(--red);">⚠️</div><div class="stat-value text-red">1</div><div class="stat-label">Alerte Active</div><div class="stat-trend text-red">Chambre C — T° élevée</div></div>
+        </div>
+
+        <div class="grid-3 mb-24">
+          <div class="storage-unit">
+            <div class="su-header"><div><div style="font-weight:700;font-size:14px;">❄️ Chambre A — Légumes frais</div><span class="tag tag-green">Optimal</span></div></div>
+            <div style="display:flex;gap:12px;margin-top:12px;">
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Température</div><div style="font-weight:700;font-size:18px;color:var(--blue);">4.2°C</div></div>
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Humidité</div><div style="font-weight:700;font-size:18px;color:var(--teal);">88%</div></div>
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Remplissage</div><div style="font-weight:700;font-size:18px;color:var(--green-dark);">72%</div></div>
+            </div>
+            <div class="progress-bar mt-12"><div class="progress-fill" style="width:72%;background:var(--green-light);"></div></div>
+            <div class="text-xs mt-12">🥦 Légumes bio · Durée conservation : 18 jours restants</div>
+          </div>
+
+          <div class="storage-unit">
+            <div class="su-header"><div><div style="font-weight:700;font-size:14px;">🌾 Silo B — Céréales sèches</div><span class="tag tag-gold">Normal</span></div></div>
+            <div style="display:flex;gap:12px;margin-top:12px;">
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Température</div><div style="font-weight:700;font-size:18px;color:var(--gold);">18.5°C</div></div>
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Humidité grain</div><div style="font-weight:700;font-size:18px;color:var(--green-dark);">12%</div></div>
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Remplissage</div><div style="font-weight:700;font-size:18px;">55%</div></div>
+            </div>
+            <div class="progress-bar mt-12"><div class="progress-fill" style="width:55%;background:var(--gold);"></div></div>
+            <div class="text-xs mt-12">🌽 Maïs + 🫘 Soja · Conservation : 8 mois</div>
+          </div>
+
+          <div class="storage-unit" style="border-color:var(--red);">
+            <div class="su-header"><div><div style="font-weight:700;font-size:14px;">⚠️ Chambre C — Fruits tropicaux</div><span class="tag tag-red">Alerte</span></div></div>
+            <div style="display:flex;gap:12px;margin-top:12px;">
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Température</div><div style="font-weight:700;font-size:18px;color:var(--red);">12.8°C</div></div>
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Cible</div><div style="font-weight:700;font-size:18px;">8°C</div></div>
+              <div style="flex:1;font-size:12.5px;"><div class="text-xs">Remplissage</div><div style="font-weight:700;font-size:18px;color:var(--orange);">91%</div></div>
+            </div>
+            <div class="progress-bar mt-12"><div class="progress-fill" style="width:91%;background:var(--red);"></div></div>
+            <div class="text-xs mt-12" style="color:var(--red);">🍍 Ananas · Compresseur en panne · Technicien alerté</div>
+            <button class="btn btn-sm w-full mt-12" style="background:var(--red);color:#fff;" onclick="showToast('Technicien alerté','Intervention prévue dans 45 min','error')"><i class="fa-solid fa-wrench"></i> Maintenance Urgente</button>
+          </div>
+        </div>
+
+        <!-- Méthode de conservation IA -->
+        <div class="card card-pad">
+          <div class="section-header"><h3 class="section-title">🤖 Module IA Conservation — Recommandations</h3></div>
+          <div class="grid-3">
+            <div class="recommendation-card">
+              <h4>🧬 Emballage Nano-argile Bio</h4>
+              <p>Pour les fruits tropicaux : emballage nano-argile + chitosane réduit le murissement de 40% et prolonge la conservation de 3 semaines sans réfrigération.</p>
+            </div>
+            <div class="recommendation-card">
+              <h4>☀️ Séchage Solaire Optimisé</h4>
+              <p>IA calcule l'angle optimal des séchoirs selon l'ensoleillement togolais. Économie : 100% énergie fossile. Durée céréales : 6-8h à 38°C max.</p>
+            </div>
+            <div class="recommendation-card">
+              <h4>🔬 Fermentation Contrôlée</h4>
+              <p>Pour manioc et soja : fermentation lacto-bacille contrôlée par IA. Augmente valeur nutritive de 25% et durée de conservation jusqu'à 12 mois.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: MARCHE ████████████████ -->
+      <div class="page" id="page-marche">
+        <div class="grid-4 mb-24">
+          <div class="stat-card"><div class="stat-icon" style="background:var(--green-pale);color:var(--green-dark);">💰</div><div class="stat-value text-green">148 M</div><div class="stat-label">CA Mois (FCFA)</div><div class="stat-trend text-green"><i class="fa-solid fa-arrow-trend-up"></i> +32%</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--gold-light);color:var(--gold);">🌍</div><div class="stat-value text-gold">7</div><div class="stat-label">Pays Acheteurs</div><div class="stat-trend text-green">UE + USA + Asie</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--blue-light);color:var(--blue);">📋</div><div class="stat-value" style="color:var(--blue);">23</div><div class="stat-label">Contrats Actifs</div><div class="stat-trend">B2B + Coopératives</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#FFF3E0;color:var(--orange);">🏆</div><div class="stat-value text-orange">97%</div><div class="stat-label">Taux Certification Bio</div><div class="stat-trend text-green">UE Bio + NOP</div></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">📦 Produits Disponibles à l'Export</h3>
+              <button class="btn btn-sm btn-primary" onclick="openModal('exportModal')"><i class="fa-solid fa-plus"></i> Nouveau Lot</button>
+            </div>
+            <table class="data-table">
+              <thead><tr><th>Produit</th><th>Quantité</th><th>Prix/T</th><th>Certification</th><th>Statut</th></tr></thead>
+              <tbody>
+                <tr><td>🫘 Soja Bio</td><td>10.2T</td><td>2 850 EUR</td><td><span class="tag tag-green">UE Bio</span></td><td><span class="tag tag-gold">Negociation</span></td></tr>
+                <tr><td>🌽 Farine Maïs</td><td>8.2T</td><td>780 EUR</td><td><span class="tag tag-green">UE Bio</span></td><td><span class="tag tag-green">Vendu</span></td></tr>
+                <tr><td>🍍 Ananas séché</td><td>2.4T</td><td>3 200 EUR</td><td><span class="tag tag-green">NOP USA</span></td><td><span class="tag tag-teal">Prêt</span></td></tr>
+                <tr><td>🥜 Huile Arachide</td><td>1.8T</td><td>1 900 EUR</td><td><span class="tag tag-green">UE Bio</span></td><td><span class="tag tag-teal">Disponible</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🤝 Acheteurs Partenaires</h3></div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="activity-item">
+                <div class="activity-dot" style="background:#E8F5E9;font-size:20px;">🇩🇪</div>
+                <div class="activity-text"><strong>BioHarvest GmbH — Allemagne</strong><span>Soja bio · Contrat annuel 120T · 2 850 EUR/T</span></div>
+                <span class="tag tag-green">Actif</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:#E8F5E9;font-size:20px;">🇫🇷</div>
+                <div class="activity-text"><strong>Naturalia France — Paris</strong><span>Ananas séché + Farine · 45T/an</span></div>
+                <span class="tag tag-green">Actif</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:#EBF4FF;font-size:20px;">🇺🇸</div>
+                <div class="activity-text"><strong>Green Fields USA — California</strong><span>Huile arachide + Karité · 30T/an</span></div>
+                <span class="tag tag-gold">Renouvellement</span>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:#FFF3E0;font-size:20px;">🇯🇵</div>
+                <div class="activity-text"><strong>Organic Japan Co. — Tokyo</strong><span>Soja farine · Nouveau contrat 80T</span></div>
+                <span class="tag tag-teal">Négociation</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: SANTE ████████████████ -->
+      <div class="page" id="page-sante">
+        <div class="grid-4 mb-24">
+          <div class="stat-card"><div class="stat-icon" style="background:#FDECEA;color:var(--red);">❤️</div><div class="stat-value text-green">+28%</div><div class="stat-label">Amélioration nutrition</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--green-pale);color:var(--green-dark);">🥗</div><div class="stat-value text-green">0</div><div class="stat-label">Résidus chimiques</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--gold-light);color:var(--gold);">👨‍👩‍👧</div><div class="stat-value text-gold">12 847</div><div class="stat-label">Bénéficiaires</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--blue-light);color:var(--blue);">🏥</div><div class="stat-value" style="color:var(--blue);">-18%</div><div class="stat-label">Maladies alimentaires</div></div>
+        </div>
+
+        <div class="grid-2 mb-24">
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🥗 Profil Nutritionnel — Soja Bio K-12</h3></div>
+            <div style="margin-top:8px;">
+              <div class="nutrition-bar"><div class="n-label">Protéines</div><div class="n-bar"><div class="n-fill" style="width:85%;background:var(--green-light);"></div></div><div class="n-val text-green">36g</div></div>
+              <div class="nutrition-bar"><div class="n-label">Lipides sains</div><div class="n-bar"><div class="n-fill" style="width:45%;background:var(--gold);"></div></div><div class="n-val text-gold">18g</div></div>
+              <div class="nutrition-bar"><div class="n-label">Fibres</div><div class="n-bar"><div class="n-fill" style="width:60%;background:var(--teal);"></div></div><div class="n-val" style="color:var(--teal);">9g</div></div>
+              <div class="nutrition-bar"><div class="n-label">Fer</div><div class="n-bar"><div class="n-fill" style="width:70%;background:var(--orange);"></div></div><div class="n-val text-orange">8mg</div></div>
+              <div class="nutrition-bar"><div class="n-label">Calcium</div><div class="n-bar"><div class="n-fill" style="width:28%;background:var(--blue);"></div></div><div class="n-val" style="color:var(--blue);">280mg</div></div>
+              <div class="nutrition-bar"><div class="n-label">Vitamine B12</div><div class="n-bar"><div class="n-fill" style="width:40%;background:#9C27B0;"></div></div><div class="n-val" style="color:#9C27B0;">2.4μg</div></div>
+            </div>
+            <div style="background:var(--green-pale);border-radius:10px;padding:12px;margin-top:16px;font-size:12.5px;color:var(--text-mid);">
+              <strong style="color:var(--green-dark);">💡 IA Nutritionnelle :</strong> Ce soja bio est 35% plus riche en protéines et 50% plus riche en fer que la moyenne nationale. Recommandé pour lutter contre la malnutrition infantile.
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🍽 Recommandations Consommation IA</h3></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div class="recommendation-card">
+                <h4>👶 Enfants (6-12 ans)</h4>
+                <p>Bouillie de soja enrichie (200ml/jour) : couvre 60% des besoins en protéines. Préparation : mixer 30g farine soja + eau chaude + banane mûre.</p>
+              </div>
+              <div class="recommendation-card">
+                <h4>🤰 Femmes enceintes</h4>
+                <p>Lait de soja bio (2 verres/jour) + huile arachide (1 cuillère) = 40% des besoins en fer et folates. Réduit anémie gestationnelle de 35%.</p>
+              </div>
+              <div class="recommendation-card">
+                <h4>👴 Personnes âgées</h4>
+                <p>Tofu bio 3x/semaine : source de calcium biodisponible. Réduit risque d'ostéoporose. Association recommandée avec légumes verts locaux.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: ENVIRONNEMENT ████████████████ -->
+      <div class="page" id="page-environnement">
+        <div class="grid-4 mb-24">
+          <div class="stat-card" style="border-top:3px solid var(--green-med);">
+            <div class="stat-icon" style="background:var(--green-pale);color:var(--green-dark);">🌳</div>
+            <div class="stat-value text-green">26 142</div>
+            <div class="stat-label">Tonnes CO₂ séquestrées</div>
+            <div class="stat-trend text-green">+2.1T/ha/an</div>
+          </div>
+          <div class="stat-card" style="border-top:3px solid var(--teal);">
+            <div class="stat-icon" style="background:var(--teal-light);color:var(--teal);">💧</div>
+            <div class="stat-value" style="color:var(--teal);">-60%</div>
+            <div class="stat-label">Eau économisée</div>
+            <div class="stat-trend" style="color:var(--teal);">vs agriculture trad.</div>
+          </div>
+          <div class="stat-card" style="border-top:3px solid var(--gold);">
+            <div class="stat-icon" style="background:var(--gold-light);color:var(--gold);">🌱</div>
+            <div class="stat-value text-gold">-85%</div>
+            <div class="stat-label">Pesticides éliminés</div>
+            <div class="stat-trend text-green">Zéro chimique</div>
+          </div>
+          <div class="stat-card" style="border-top:3px solid var(--orange);">
+            <div class="stat-icon" style="background:#FFF3E0;color:var(--orange);">☀️</div>
+            <div class="stat-value text-orange">100%</div>
+            <div class="stat-label">Énergie solaire</div>
+            <div class="stat-trend text-green">0 fossile</div>
+          </div>
+        </div>
+
+        <div class="card card-pad mb-24">
+          <div class="section-header"><h3 class="section-title">🌍 Contribution Climatique AGRO-IA — Togo 2024</h3></div>
+          <div class="grid-3">
+            <div>
+              <div class="section-header" style="margin-bottom:8px;"><h4 style="font-size:13.5px;font-weight:700;">Séquestration Carbone</h4></div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div class="nutrition-bar"><div class="n-label" style="width:130px;">Sols restaurés</div><div class="n-bar"><div class="n-fill" style="width:78%;background:var(--green-dark);"></div></div><div class="n-val">78%</div></div>
+                <div class="nutrition-bar"><div class="n-label" style="width:130px;">Agroforesterie</div><div class="n-bar"><div class="n-fill" style="width:55%;background:var(--green-light);"></div></div><div class="n-val">55%</div></div>
+                <div class="nutrition-bar"><div class="n-label" style="width:130px;">Biogaz produit</div><div class="n-bar"><div class="n-fill" style="width:32%;background:var(--teal);"></div></div><div class="n-val">32%</div></div>
+              </div>
+            </div>
+            <div>
+              <div class="section-header" style="margin-bottom:8px;"><h4 style="font-size:13.5px;font-weight:700;">Biodiversité Préservée</h4></div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div class="activity-item" style="padding:8px 0;">
+                  <div class="activity-dot" style="background:var(--green-pale);font-size:16px;">🦋</div>
+                  <div class="activity-text"><strong style="font-size:12.5px;">+42 espèces</strong><span style="font-size:12px;">Insectes pollinisateurs restaurés</span></div>
+                </div>
+                <div class="activity-item" style="padding:8px 0;">
+                  <div class="activity-dot" style="background:var(--green-pale);font-size:16px;">🐦</div>
+                  <div class="activity-text"><strong style="font-size:12.5px;">+18 espèces</strong><span style="font-size:12px;">Oiseaux migrateurs revenus</span></div>
+                </div>
+                <div class="activity-item" style="padding:8px 0;">
+                  <div class="activity-dot" style="background:var(--green-pale);font-size:16px;">🪱</div>
+                  <div class="activity-text"><strong style="font-size:12.5px;">×4 densité</strong><span style="font-size:12px;">Vers de terre (microbiome)</span></div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="section-header" style="margin-bottom:8px;"><h4 style="font-size:13.5px;font-weight:700;">Crédits Carbone</h4></div>
+              <div style="background:linear-gradient(135deg,var(--green-pale),var(--teal-light));border-radius:12px;padding:16px;text-align:center;">
+                <div style="font-family:var(--font-main);font-size:28px;font-weight:800;color:var(--green-dark);">26 142</div>
+                <div style="font-size:12px;color:var(--text-mid);">Tonnes CO₂ équivalent</div>
+                <div style="margin-top:8px;font-size:13px;font-weight:700;color:var(--gold);">≈ 392 130 EUR</div>
+                <div style="font-size:11px;color:var(--text-light);">Valeur marchée carbone</div>
+                <button class="btn btn-sm btn-primary mt-12 w-full" onclick="showToast('Rapport carbone généré','Soumis au GCF pour validation')">Valoriser</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: COMMUNAUTE ████████████████ -->
+      <div class="page" id="page-communaute">
+        <div class="chat-layout">
+          <div class="chat-list">
+            <div class="chat-list-header">
+              <h3>Communauté AGRO-IA</h3>
+              <div class="chat-search">
+                <i class="fa-solid fa-magnifying-glass" style="color:var(--text-light);font-size:13px;"></i>
+                <input type="text" placeholder="Rechercher…">
+              </div>
+            </div>
+            <div class="chat-items" id="chatList">
+              <!-- généré par JS -->
+            </div>
+          </div>
+          <div class="chat-window">
+            <div class="chat-header">
+              <div class="msg-av">KM</div>
+              <div>
+                <div style="font-weight:700;font-size:13.5px;">Kofi Mensah</div>
+                <div style="font-size:11.5px;color:var(--green-med);">● En ligne · Agriculteur · Kpalimé</div>
+              </div>
+              <div style="margin-left:auto;display:flex;gap:8px;">
+                <button class="hdr-btn" onclick="showToast('Appel video','Fonctionnalité bientôt disponible')"><i class="fa-solid fa-video"></i></button>
+                <button class="hdr-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+              </div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+              <div class="msg in">
+                <div class="msg-av">KM</div>
+                <div>
+                  <div class="msg-bubble">Bonjour Docteur IA ! Mon soja K-12 montre des feuilles jaunies. C'est quoi le problème ?</div>
+                  <div class="msg-time">10:15</div>
+                </div>
+              </div>
+              <div class="msg out">
+                <div>
+                  <div class="msg-bubble">Bonjour Kofi ! D'après les données du scanner de K-12, c'est une carence légère en azote. L'IA recommande un apport de 80 kg/ha de compost enrichi.</div>
+                  <div class="msg-time">10:17 ✓✓</div>
+                </div>
+              </div>
+              <div class="msg in">
+                <div class="msg-av">KM</div>
+                <div>
+                  <div class="msg-bubble">Merci ! Et pour l'irrigation, le drone peut venir demain matin ?</div>
+                  <div class="msg-time">10:19</div>
+                </div>
+              </div>
+              <div class="msg out">
+                <div>
+                  <div class="msg-bubble">Oui ! J'ai planifié le drone D-07 pour demain à 06h30. La météo IA prédit 0% de pluie. Volume : 18L/m² sur 3h.</div>
+                  <div class="msg-time">10:20 ✓✓</div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input-area">
+              <button class="hdr-btn"><i class="fa-solid fa-paperclip"></i></button>
+              <input type="text" class="chat-input" id="chatInput" placeholder="Écrire un message…" onkeydown="if(event.key==='Enter')sendMsg()">
+              <button class="btn btn-primary btn-icon" onclick="sendMsg()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: RAPPORTS ████████████████ -->
+      <div class="page" id="page-rapports">
+        <div class="grid-4 mb-24">
+          <div class="stat-card"><div class="stat-icon" style="background:var(--green-pale);">📊</div><div class="stat-value text-green">148M</div><div class="stat-label">CA Total FCFA</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--gold-light);">📈</div><div class="stat-value text-gold">+251%</div><div class="stat-label">ROI 5 ans</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:var(--blue-light);">🎯</div><div class="stat-value" style="color:var(--blue);">94%</div><div class="stat-label">Précision IA sols</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#FFF3E0;">⚡</div><div class="stat-value text-orange">99.8%</div><div class="stat-label">Uptime Plateforme</div></div>
+        </div>
+
+        <div class="grid-2 mb-24">
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">📋 Rapports IA Générés</h3>
+              <button class="btn btn-sm btn-primary" onclick="generateReport()"><i class="fa-solid fa-wand-magic-sparkles"></i> Générer</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="activity-item">
+                <div class="activity-dot" style="background:var(--green-pale);">📄</div>
+                <div class="activity-text"><strong>Rapport Mensuel Décembre 2024</strong><span>Production · Rendements · Revenus agriculteurs · Environnement</span></div>
+                <button class="btn btn-sm btn-outline" onclick="showToast('Téléchargement','Rapport_Dec2024.pdf')"><i class="fa-solid fa-download"></i></button>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:#EBF4FF;">📊</div>
+                <div class="activity-text"><strong>Analyse Impact Environnemental Q4</strong><span>CO₂ · Eau · Biodiversité · Crédits carbone</span></div>
+                <button class="btn btn-sm btn-outline" onclick="showToast('Téléchargement','Impact_Q4_2024.pdf')"><i class="fa-solid fa-download"></i></button>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:#FFF8E7;">🤖</div>
+                <div class="activity-text"><strong>Rapport IA — Précision Modèles</strong><span>94.2% précision sol · 97.1% drone autonomie · F1-score 0.96</span></div>
+                <button class="btn btn-sm btn-outline" onclick="showToast('Téléchargement','IA_Performance_Dec2024.pdf')"><i class="fa-solid fa-download"></i></button>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot" style="background:var(--teal-light);">💰</div>
+                <div class="activity-text"><strong>Bilan Financier Prévisionnel An 3</strong><span>CA 6 Mds FCFA · ROI +44% · 2 000 agriculteurs</span></div>
+                <button class="btn btn-sm btn-outline" onclick="showToast('Téléchargement','Finance_An3.pdf')"><i class="fa-solid fa-download"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🔔 Alertes & Notifications IA</h3></div>
+            <div style="display:flex;flex-direction:column;gap:8px;" id="alertList">
+              <div style="background:#FDECEA;border-radius:10px;padding:12px;border-left:4px solid var(--red);">
+                <div style="font-weight:700;font-size:13px;color:var(--red);">⚠️ Chambre froide C — Température critique</div>
+                <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">T° 12.8°C (cible 8°C) · Technicien alerté</div>
+              </div>
+              <div style="background:#FFF8E7;border-radius:10px;padding:12px;border-left:4px solid var(--gold);">
+                <div style="font-weight:700;font-size:13px;color:var(--gold);">⚠️ Carence Azote — Parcelle L-21</div>
+                <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Amendement organite requis dans 48h max</div>
+              </div>
+              <div style="background:#FFF3E0;border-radius:10px;padding:12px;border-left:4px solid var(--orange);">
+                <div style="font-weight:700;font-size:13px;color:var(--orange);">🔧 Tracteur T-02 — Hydraulique en réparation</div>
+                <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Bras robot R-01 en intervention · ETA 12 min</div>
+              </div>
+              <div style="background:var(--green-pale);border-radius:10px;padding:12px;border-left:4px solid var(--green-med);">
+                <div style="font-weight:700;font-size:13px;color:var(--green-dark);">✅ Récolte Maïs M-04 — Prête dans 8 jours</div>
+                <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">Maturité IA : 87% · Drone inspection planifié J-2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ████████████████ PAGE: PARAMETRES ████████████████ -->
+      <div class="page" id="page-parametres">
+        <div class="grid-2">
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">⚙️ Configuration Plateforme</h3></div>
+            <div class="form-group">
+              <label class="form-label">Nom de l'exploitation</label>
+              <input class="form-control" type="text" value="AGRO-IA TOGO — Siège Lomé">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Région principale</label>
+              <select class="form-control"><option>Maritime (Lomé)</option><option>Plateaux (Kpalimé)</option><option>Savanes (Dapaong)</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Langue de l'IA</label>
+              <select class="form-control"><option>Français</option><option>Ewe</option><option>Kabye</option><option>Anglais</option></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Fréquence rapports automatiques</label>
+              <select class="form-control"><option>Quotidien</option><option>Hebdomadaire</option><option>Mensuel</option></select>
+            </div>
+            <button class="btn btn-primary w-full" onclick="showToast('Paramètres sauvegardés','Configuration mise à jour')"><i class="fa-solid fa-save"></i> Sauvegarder</button>
+          </div>
+          <div class="card card-pad">
+            <div class="section-header"><h3 class="section-title">🔗 Intégrations API</h3></div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div class="flex-center gap-12" style="padding:12px;background:var(--bg);border-radius:10px;">
+                <span style="font-size:20px;">🛰</span>
+                <div style="flex:1;"><div style="font-weight:600;font-size:13px;">Sentinel-2 (ESA)</div><div class="text-xs">Imagerie satellitaire multispectrale</div></div>
+                <span class="tag tag-green">✓ Connecté</span>
+              </div>
+              <div class="flex-center gap-12" style="padding:12px;background:var(--bg);border-radius:10px;">
+                <span style="font-size:20px;">🌤</span>
+                <div style="flex:1;"><div style="font-weight:600;font-size:13px;">OpenWeatherMap API</div><div class="text-xs">Météo temps réel et prévisions</div></div>
+                <span class="tag tag-green">✓ Connecté</span>
+              </div>
+              <div class="flex-center gap-12" style="padding:12px;background:var(--bg);border-radius:10px;">
+                <span style="font-size:20px;">⛓</span>
+                <div style="flex:1;"><div style="font-weight:600;font-size:13px;">Hyperledger Fabric</div><div class="text-xs">Blockchain traçabilité produits</div></div>
+                <span class="tag tag-green">✓ Connecté</span>
+              </div>
+              <div class="flex-center gap-12" style="padding:12px;background:var(--bg);border-radius:10px;">
+                <span style="font-size:20px;">💳</span>
+                <div style="flex:1;"><div style="font-weight:600;font-size:13px;">Flooz / T-Money</div><div class="text-xs">Paiement mobile agriculteurs</div></div>
+                <span class="tag tag-gold">⚠ Configuration</span>
+              </div>
+              <div class="flex-center gap-12" style="padding:12px;background:var(--bg);border-radius:10px;">
+                <span style="font-size:20px;">🚁</span>
+                <div style="flex:1;"><div style="font-weight:600;font-size:13px;">DJI Cloud SDK</div><div class="text-xs">Gestion flotte drones</div></div>
+                <span class="tag tag-green">✓ Connecté</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ══════════════════════════════════ MODALS ══════════════════════════════════ -->
+
+<!-- Modal Analyse Sol -->
+<div class="modal-overlay" id="solModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🌱 Nouvelle Analyse de Sol</h3>
+      <div class="modal-close" onclick="closeModal('solModal')"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Identifiant Parcelle</label><input class="form-control" type="text" placeholder="Ex: K-15"></div>
+      <div class="form-group"><label class="form-label">Région</label><select class="form-control"><option>Maritime</option><option>Plateaux</option><option>Savanes</option><option>Centrale</option><option>Kara</option></select></div>
+      <div class="grid-2 gap-16"><div class="form-group"><label class="form-label">Surface (ha)</label><input class="form-control" type="number" placeholder="0"></div><div class="form-group"><label class="form-label">Profondeur analyse (cm)</label><input class="form-control" type="number" value="30"></div></div>
+      <div class="form-group"><label class="form-label">Type de sol (visuel)</label><select class="form-control"><option>Argilo-limoneux</option><option>Sableux</option><option>Latéritique</option><option>Argileux</option><option>Limoneux</option></select></div>
+      <div class="form-group"><label class="form-label">Historique (dernière culture)</label><input class="form-control" type="text" placeholder="Ex: Maïs — 2023"></div>
+      <div class="form-group"><label class="form-label">Notes terrain</label><textarea class="form-control" rows="3" placeholder="Observations visuelles…"></textarea></div>
+      <button class="btn btn-primary w-full" onclick="runSoilAnalysis()"><i class="fa-solid fa-wand-magic-sparkles"></i> Lancer Analyse IA</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Culture -->
+<div class="modal-overlay" id="cultureModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🌿 Ajouter une Culture</h3>
+      <div class="modal-close" onclick="closeModal('cultureModal')"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Type de culture</label><select class="form-control"><option>Soja Biologique</option><option>Maïs Bio</option><option>Arachide Bio</option><option>Ananas Bio</option><option>Manioc Bio</option><option>Karité</option><option>Coton Bio</option><option>Café Bio</option><option>Cacao Bio</option></select></div>
+      <div class="form-group"><label class="form-label">Parcelle assignée</label><select class="form-control"><option>K-12 (Kpalimé)</option><option>M-04 (Maritime)</option><option>S-08 (Savanes)</option><option>Nouvelle parcelle</option></select></div>
+      <div class="grid-2 gap-16"><div class="form-group"><label class="form-label">Date de semis</label><input class="form-control" type="date"></div><div class="form-group"><label class="form-label">Surface (ha)</label><input class="form-control" type="number"></div></div>
+      <div class="form-group"><label class="form-label">Mode d'irrigation</label><select class="form-control"><option>Drone autonome (recommandé)</option><option>Irrigation gravitaire</option><option>Pluviale</option></select></div>
+      <button class="btn btn-primary w-full" onclick="addCulture()"><i class="fa-solid fa-plus"></i> Enregistrer Culture</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Drone -->
+<div class="modal-overlay" id="droneModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🚁 Ajouter / Planifier Drone</h3>
+      <div class="modal-close" onclick="closeModal('droneModal')"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Modèle de drone</label><select class="form-control"><option>DJI Agras T50</option><option>DJI Agras T25</option><option>DJI Mavic 3M (Multispectral)</option><option>Parrot Sequoia</option></select></div>
+      <div class="form-group"><label class="form-label">Mission</label><select class="form-control"><option>Irrigation de précision</option><option>Surveillance multispectrale</option><option>Épandage biopesticide</option><option>Semis</option><option>Cartographie parcelle</option></select></div>
+      <div class="form-group"><label class="form-label">Parcelle cible</label><select class="form-control"><option>K-12 (Kpalimé)</option><option>M-04 (Maritime)</option><option>S-08 (Savanes)</option><option>L-21 (Maritime)</option></select></div>
+      <div class="grid-2 gap-16"><div class="form-group"><label class="form-label">Date/Heure départ</label><input class="form-control" type="datetime-local"></div><div class="form-group"><label class="form-label">Altitude (m)</label><input class="form-control" type="number" value="15"></div></div>
+      <button class="btn btn-primary w-full" onclick="planDrone()"><i class="fa-solid fa-paper-plane"></i> Planifier Mission</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tracteur -->
+<div class="modal-overlay" id="tracteurModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🚜 Planifier Mission Tracteur</h3>
+      <div class="modal-close" onclick="closeModal('tracteurModal')"><i class="fa-solid fa-xmark"></i></div>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Tracteur</label><select class="form-control"><option>T-01 — John Deere 5075 (Disponible)</option><option>T-02 — New Holland T5 (Maintenance)</option></select></div>
+      <div class="form-group"><label class="form-label">Type d'opération</label><select class="form-control"><option>Labour (profondeur IA)</option><option>Semis mécanique</option><option>Sarclage automatique</option><option>Récolte</option></select></div>
+      <div class="form-group"><label class="form-label">Parcelle</label><select class="form-control"><option>K-12</option><option>M-04</option><option>S-08</option></select></div>
+      <div class="grid-2 gap-16"><div class="form-group"><label class="form-label">Profondeur (cm)</label><input class="form-control" type="number" placeholder="Recommandation IA"></div><div class="form-group"><label class="form-label">Vitesse (km/h)</label><input class="form-control" type="number" value="6"></div></div>
+      <button class="btn btn-primary w-full" onclick="planTracteur()"><i class="fa-solid fa-tractor"></i> Lancer Mission Autonome</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Export -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal">
+    <div class="modal-header"><h3>✈️ Créer Lot Export</h3><div class="modal-close" onclick="closeModal('exportModal')"><i class="fa-solid fa-xmark"></i></div></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Produit</label><select class="form-control"><option>Soja Bio</option><option>Farine Maïs Bio</option><option>Huile Arachide Bio</option><option>Ananas Séché Bio</option><option>Karité Bio</option></select></div>
+      <div class="grid-2 gap-16"><div class="form-group"><label class="form-label">Quantité (tonnes)</label><input class="form-control" type="number"></div><div class="form-group"><label class="form-label">Acheteur</label><select class="form-control"><option>BioHarvest GmbH</option><option>Naturalia France</option><option>Green Fields USA</option><option>Organic Japan</option></select></div></div>
+      <div class="form-group"><label class="form-label">Certifications incluses</label><select class="form-control"><option>UE Bio + NOP USA</option><option>UE Bio seulement</option><option>NOP USA seulement</option></select></div>
+      <button class="btn btn-primary w-full" onclick="createExport()"><i class="fa-solid fa-qrcode"></i> Générer Lot + QR Blockchain</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Alertes -->
+<div class="modal-overlay" id="alertModal">
+  <div class="modal">
+    <div class="modal-header"><h3>🔔 Alertes & Notifications</h3><div class="modal-close" onclick="closeModal('alertModal')"><i class="fa-solid fa-xmark"></i></div></div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="background:#FDECEA;border-radius:10px;padding:12px;border-left:4px solid var(--red);"><div style="font-weight:700;font-size:13px;color:var(--red);">⚠️ Chambre froide C — 12.8°C (critique)</div><div class="text-xs mt-12">Il y a 15 minutes</div></div>
+        <div style="background:#FFF8E7;border-radius:10px;padding:12px;border-left:4px solid var(--gold);"><div style="font-weight:700;font-size:13px;color:var(--gold);">⚠️ Carence Azote — Parcelle L-21</div><div class="text-xs mt-12">Il y a 3h</div></div>
+        <div style="background:#FFF3E0;border-radius:10px;padding:12px;border-left:4px solid var(--orange);"><div style="font-weight:700;font-size:13px;color:var(--orange);">🔧 Tracteur T-02 — Bras hydraulique</div><div class="text-xs mt-12">Il y a 1h</div></div>
+        <div style="background:var(--green-pale);border-radius:10px;padding:12px;border-left:4px solid var(--green-med);"><div style="font-weight:700;font-size:13px;color:var(--green-dark);">✅ Récolte Maïs M-04 prête dans 8 jours</div><div class="text-xs mt-12">Il y a 2h</div></div>
+        <div style="background:var(--blue-light);border-radius:10px;padding:12px;border-left:4px solid var(--blue);"><div style="font-weight:700;font-size:13px;color:var(--blue);">📦 Lot #831 (Maïs) certifié UE Bio</div><div class="text-xs mt-12">Il y a 4h</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Profile -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal">
+    <div class="modal-header"><h3>👤 Mon Profil</h3><div class="modal-close" onclick="closeModal('profileModal')"><i class="fa-solid fa-xmark"></i></div></div>
+    <div class="modal-body">
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--green-light),var(--teal));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:#fff;margin:0 auto 10px;">AT</div>
+        <div style="font-weight:700;font-size:16px;">Admin AGRO-IA</div>
+        <div class="text-xs">Superviseur Général · Lomé, Togo</div>
+      </div>
+      <div class="form-group"><label class="form-label">Nom complet</label><input class="form-control" type="text" value="Admin AGRO-IA TOGO"></div>
+      <div class="form-group"><label class="form-label">Email</label><input class="form-control" type="email" value="admin@agroiatogo.com"></div>
+      <div class="form-group"><label class="form-label">Téléphone</label><input class="form-control" type="tel" value="+228 XX XX XX XX"></div>
+      <button class="btn btn-primary w-full" onclick="showToast('Profil mis à jour','Modifications sauvegardées');closeModal('profileModal')">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════════
+const pageTitles = {
+  dashboard: '🏠 Tableau de Bord',
+  sols: '🌱 Analyse des Sols',
+  cultures: '🌿 Cultures',
+  drones: '🚁 Drones & Missions',
+  tracteurs: '🚜 Tracteurs & Machines',
+  supply: '🚚 Chaîne d\'Approvisionnement',
+  transformation: '🏭 Transformation',
+  conservation: '❄️ Conservation',
+  marche: '🌍 Marché & Export',
+  sante: '❤️ Santé & Nutrition',
+  environnement: '🌍 Environnement',
+  communaute: '💬 Communauté',
+  rapports: '📊 Rapports & IA',
+  parametres: '⚙️ Paramètres',
+};
+
+function navigate(pageId, el) {
+  // hide all pages
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // show page
+  const page = document.getElementById('page-' + pageId);
+  if (page) page.classList.add('active');
+  // activate nav
+  if (el) el.classList.add('active');
+  else {
+    const navEl = document.querySelector(`[data-page="${pageId}"]`);
+    if (navEl) navEl.classList.add('active');
+  }
+  // update title
+  document.getElementById('pageTitle').textContent = pageTitles[pageId] || pageId;
+  // close sidebar on mobile
+  closeSidebar();
+  // lazy init
+  if (pageId === 'cultures') initCultures();
+  if (pageId === 'drones') initDrones();
+  if (pageId === 'communaute') initChat();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SIDEBAR MOBILE
+// ═══════════════════════════════════════════════════════════════════
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+function closeSidebar() {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════════════
+function showToast(title, text, type = 'success') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  const icons = { success: '✅', error: '❌', warning: '⚠️' };
+  t.className = `toast ${type !== 'success' ? type : ''}`;
+  t.innerHTML = `<span class="toast-icon">${icons[type]}</span><div class="toast-text"><strong>${title}</strong><span>${text}</span></div>`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; t.style.transition = '.3s'; setTimeout(() => t.remove(), 300); }, 3500);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CULTURES DATA
+// ═══════════════════════════════════════════════════════════════════
+const culturesData = [
+  { emoji:'🫘', name:'Soja Biologique', type:'legumineuses', level:'Avancé', rating:4.9, reviews:128, duration:'90 jours', yield:'2.8T/ha', parcelle:'K-12', tag:'green', status:'En croissance' },
+  { emoji:'🌽', name:'Maïs Biologique', type:'cereales', level:'Intermédiaire', rating:4.7, reviews:214, duration:'75 jours', yield:'4.2T/ha', parcelle:'M-04', tag:'gold', status:'Épiaison' },
+  { emoji:'🥜', name:'Arachide Bio', type:'legumineuses', level:'Débutant', rating:4.8, reviews:96, duration:'110 jours', yield:'1.8T/ha', parcelle:'S-08', tag:'teal', status:'Floraison' },
+  { emoji:'🍍', name:'Ananas Biologique', type:'fruits', level:'Intermédiaire', rating:4.9, reviews:74, duration:'18 mois', yield:'40T/ha', parcelle:'L-18', tag:'orange', status:'Croissance' },
+  { emoji:'🥥', name:'Noix de Coco Bio', type:'fruits', level:'Avancé', rating:4.6, reviews:52, duration:'12 mois', yield:'8T/ha', parcelle:'M-11', tag:'teal', status:'Maturité' },
+  { emoji:'🛢', name:'Karité Biologique', type:'oleagineux', level:'Avancé', rating:4.9, reviews:38, duration:'Pérenne', yield:'200 kg/arbre', parcelle:'S-02', tag:'gold', status:'Floraison' },
+  { emoji:'☕', name:'Café Bio Robusta', type:'medicinal', level:'Expert', rating:5.0, reviews:22, duration:'3 ans', yield:'1.5T/ha', parcelle:'K-07', tag:'green', status:'Murissement' },
+  { emoji:'🍫', name:'Cacao Biologique', type:'oleagineux', level:'Expert', rating:4.8, reviews:44, duration:'Pérenne', yield:'0.8T/ha', parcelle:'K-09', tag:'gold', status:'Croissance' },
+  { emoji:'🌿', name:'Moringa Bio', type:'medicinal', level:'Débutant', rating:4.7, reviews:87, duration:'60 jours', yield:'3T/ha', parcelle:'M-06', tag:'green', status:'Récolte prête' },
+];
+let activeCultureFilter = 'all';
+
+function initCultures() {
+  renderCultures('all');
+}
+function filterCulture(el, type) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  activeCultureFilter = type;
+  renderCultures(type);
+}
+function renderCultures(filter) {
+  const grid = document.getElementById('culturesGrid');
+  const filtered = filter === 'all' ? culturesData : culturesData.filter(c => c.type === filter);
+  grid.innerHTML = filtered.map(c => `
+    <div class="culture-card" onclick="showToast('Culture ${c.name}','Parcelle ${c.parcelle} · ${c.status}')">
+      <div class="culture-thumb">
+        <span style="font-size:64px;">${c.emoji}</span>
+        <span class="culture-badge tag tag-${c.tag}">${c.level}</span>
+      </div>
+      <div class="culture-body">
+        <div class="culture-instructor"><i class="fa-solid fa-location-dot"></i> Parcelle ${c.parcelle} · <span class="tag tag-${c.tag}" style="padding:2px 8px;">${c.status}</span></div>
+        <div class="culture-title">${c.name}</div>
+        <div class="flex-center gap-8 text-xs" style="margin-bottom:8px;"><i class="fa-solid fa-clock"></i>${c.duration} <i class="fa-solid fa-chart-simple" style="margin-left:6px;"></i>Rend. ${c.yield}</div>
+        <div class="culture-meta">
+          <div class="culture-rating"><i class="fa-solid fa-star"></i>${c.rating} <span class="text-xs">(${c.reviews})</span></div>
+          <div class="culture-price">Bio certifié</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// DRONES DATA
+// ═══════════════════════════════════════════════════════════════════
+const dronesData = [
+  { id:'D-07', model:'DJI Agras T50', status:'active', battery:82, mission:'Irrigation', parcelle:'M-04', progress:78 },
+  { id:'D-12', model:'DJI Mavic 3M', status:'active', battery:65, mission:'Surveillance', parcelle:'S-08', progress:45 },
+  { id:'D-22', model:'DJI Agras T25', status:'active', battery:91, mission:'Cartographie', parcelle:'N-01', progress:30 },
+  { id:'D-01', model:'DJI Agras T50', status:'idle', battery:100, mission:'Standby', parcelle:'—', progress:0 },
+  { id:'D-03', model:'Parrot Sequoia', status:'charging', battery:34, mission:'Recharge', parcelle:'—', progress:34 },
+  { id:'D-18', model:'DJI Agras T50', status:'active', battery:71, mission:'Épandage', parcelle:'L-21', progress:62 },
+];
+function initDrones() {
+  const grid = document.getElementById('dronesGrid');
+  const statusLabel = { active: '🟢 En vol', idle: '🟡 Standby', charging: '🔵 Recharge', maintenance: '🔴 Maintenance' };
+  const statusTag = { active: 'tag-green', idle: 'tag-gold', charging: 'tag-blue', maintenance: 'tag-red' };
+  grid.innerHTML = dronesData.map(d => `
+    <div class="drone-card">
+      <div class="drone-header">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="drone-status-dot ${d.status}"></span>
+          <span style="font-size:14px;font-weight:700;">${d.id}</span>
+          <span class="tag ${statusTag[d.status]}" style="margin-left:auto;">${statusLabel[d.status]}</span>
+        </div>
+        <div style="font-size:12px;opacity:.7;">${d.model}</div>
+      </div>
+      <div class="drone-metrics">
+        <div class="drone-metric"><div class="val" style="color:${d.battery>50?'#4CAF50':'#E67E22'};">${d.battery}%</div><div class="lbl">Batterie</div></div>
+        <div class="drone-metric"><div class="val">${d.mission}</div><div class="lbl">Mission</div></div>
+        <div class="drone-metric"><div class="val">${d.parcelle}</div><div class="lbl">Parcelle</div></div>
+      </div>
+      ${d.status === 'active' ? `
+      <div style="padding:12px 16px;">
+        <div class="flex-center gap-8 text-xs mb-16"><span>Progression mission</span><span style="margin-left:auto;font-weight:700;">${d.progress}%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${d.progress}%;background:var(--green-light);"></div></div>
+      </div>` : ''}
+      <div style="padding:10px 14px;border-top:1px solid var(--border);display:flex;gap:8px;">
+        <button class="btn btn-sm btn-outline" style="flex:1;" onclick="showToast('Drone ${d.id}','Données temps réel chargées')"><i class="fa-solid fa-eye"></i> Suivre</button>
+        ${d.status === 'idle' ? `<button class="btn btn-sm btn-primary" style="flex:1;" onclick="openModal('droneModal')"><i class="fa-solid fa-play"></i> Planifier</button>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CHAT
+// ═══════════════════════════════════════════════════════════════════
+const chatContacts = [
+  { init:'KM', name:'Kofi Mensah', role:'Agriculteur · Kpalimé', preview:'Merci pour les infos !', time:'10:20', unread:0, online:true },
+  { init:'AK', name:'Ama Kpeli', role:'Coopérative Plateaux', preview:'La récolte commence demain', time:'09:45', unread:2, online:true },
+  { init:'YD', name:'Yao Dodzi', role:'Agriculteur · Dapaong', preview:'Mon tracteur est prêt ?', time:'08:32', unread:3, online:false },
+  { init:'EF', name:'Essi Fiagan', role:'Agronome · Lomé', preview:'Rapport sol envoyé', time:'Hier', unread:0, online:true },
+  { init:'KB', name:'Kossi Bawa', role:'Coopérative Savanes', preview:'Besoin de 5T soja', time:'Hier', unread:1, online:false },
+];
+
+function initChat() {
+  const list = document.getElementById('chatList');
+  if (list.children.length > 0) return;
+  list.innerHTML = chatContacts.map((c, i) => `
+    <div class="chat-item ${i===0?'active':''}" onclick="selectChat(this,'${c.name}','${c.init}','${c.role}')">
+      <div class="av">${c.init}${c.online?'<span class="online-dot"></span>':''}</div>
+      <div class="info">
+        <div class="name">${c.name}</div>
+        <div class="preview">${c.preview}</div>
+      </div>
+      <div class="meta">
+        <div class="time">${c.time}</div>
+        ${c.unread ? `<div class="unread">${c.unread}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+function selectChat(el, name, init, role) {
+  document.querySelectorAll('.chat-item').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelector('.chat-header').innerHTML = `
+    <div class="msg-av">${init}</div>
+    <div><div style="font-weight:700;font-size:13.5px;">${name}</div><div style="font-size:11.5px;color:var(--green-med);">● En ligne · ${role}</div></div>
+    <div style="margin-left:auto;display:flex;gap:8px;">
+      <button class="hdr-btn" onclick="showToast('Appel video','Fonctionnalité bientôt disponible')"><i class="fa-solid fa-video"></i></button>
+      <button class="hdr-btn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+    </div>
+  `;
+}
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const msgs = document.getElementById('chatMessages');
+  const now = new Date().toLocaleTimeString('fr-FR', {hour:'2-digit',minute:'2-digit'});
+  msgs.innerHTML += `
+    <div class="msg out">
+      <div><div class="msg-bubble">${text}</div><div class="msg-time">${now} ✓✓</div></div>
+    </div>`;
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  // IA auto-reply
+  setTimeout(() => {
+    const replies = [
+      "Merci pour votre message ! L'IA analyse vos données en temps réel.",
+      "J'ai reçu votre demande. Le drone sera planifié dans les prochaines heures.",
+      "Parfait ! Je transmets à l'équipe agronomique pour validation.",
+      "Les données sol confirment votre observation. Amendement conseillé.",
+    ];
+    const r = replies[Math.floor(Math.random()*replies.length)];
+    msgs.innerHTML += `
+      <div class="msg in">
+        <div class="msg-av">🤖</div>
+        <div><div class="msg-bubble">${r}</div><div class="msg-time">${now}</div></div>
+      </div>`;
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 1200);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════════════════════
+function runSoilAnalysis() {
+  closeModal('solModal');
+  showToast('Analyse IA lancée 🤖', 'Scanner sol activé — Résultats dans 2 min');
+  setTimeout(() => showToast('Analyse terminée ✅', 'Recommandations IA générées pour la parcelle'), 2500);
+}
+function runDiagnostic() {
+  showToast('Diagnostic global lancé 🔧', 'Analyse IA de tous les équipements en cours…');
+  setTimeout(() => showToast('Diagnostic terminé ✅', '2 T-01 OK · T-02 maintenance · R-01 actif', 'warning'), 2000);
+}
+function addCulture() {
+  closeModal('cultureModal');
+  showToast('Culture ajoutée ✅', 'Programme de suivi IA activé');
+}
+function planDrone() {
+  closeModal('droneModal');
+  showToast('Mission drone planifiée 🚁', 'Notification envoyée · Plan de vol généré par IA');
+}
+function planTracteur() {
+  closeModal('tracteurModal');
+  showToast('Mission tracteur planifiée 🚜', 'GPS/RTK configuré · Mission autonome prête');
+}
+function createExport() {
+  closeModal('exportModal');
+  showToast('Lot export créé ✅', 'QR blockchain généré · Acheteur notifié');
+}
+function generateReport() {
+  showToast('Rapport IA en génération 📊', 'Compilation de toutes les données…');
+  setTimeout(() => showToast('Rapport prêt ✅', 'Rapport_Dec2024.pdf disponible en téléchargement'), 2000);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════════════════════════════
+document.getElementById('globalSearch').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  if (!q) return;
+  const pages = {
+    'sol': 'sols', 'parcelle': 'sols', 'analyse': 'sols',
+    'drone': 'drones', 'vol': 'drones', 'irrigation': 'drones',
+    'tracteur': 'tracteurs', 'machine': 'tracteurs', 'diagnostic': 'tracteurs',
+    'culture': 'cultures', 'soja': 'cultures', 'maïs': 'cultures',
+    'supply': 'supply', 'chaîne': 'supply', 'export': 'marche',
+    'marché': 'marche', 'conservation': 'conservation', 'froid': 'conservation',
+    'santé': 'sante', 'nutrition': 'sante', 'environnement': 'environnement',
+    'carbone': 'environnement', 'communauté': 'communaute', 'chat': 'communaute',
+    'rapport': 'rapports', 'bilan': 'rapports',
+  };
+  for (const [key, pageId] of Object.entries(pages)) {
+    if (q.includes(key)) { navigate(pageId, null); break; }
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════
+window.addEventListener('load', () => {
+  initCultures();
+  // Live simulation
+  setInterval(() => {
+    const temps = ['28.2', '28.4', '27.9', '28.1', '28.5'];
+    const t = temps[Math.floor(Math.random()*temps.length)];
+    // Could update weather widget here
+  }, 15000);
+});
+
+// ESC to close modals
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+  }
+});
+</script>
+</body>
+</html>
